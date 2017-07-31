@@ -1,37 +1,35 @@
-## Welcome to GitHub Pages
+# Welcome to the UVIC ROBOTICS Rover-ROS page
 
-You can use the [editor on GitHub](https://github.com/Uvic-Robotics-Club/Rover-ROS/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+A breakdown of the ROS Files will be in the wiki. The wiki should be updated so that people can get a clear understanding of what we are doing and what still needs to be done. 
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## What this repository is supposed to be
 
-### Markdown
+This will be the home for all ROS related files that control our rover. This includes microcontroller code, configuration files for sensors, custom classes, and any packages that we create.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Current Activities
 
-```markdown
-Syntax highlighted code block
+The current things that need to get done for this project will:
 
-# Header 1
-## Header 2
-### Header 3
+- Decide on ROS Version
+- Create basic framework for what needs to be published and subscribed
+- Start building custom classes for each type of sensor
+- Figure out how to handle more compute nodes
+- Figure out gazebo
+- Start simulating in gazebo
+- Implement on Rover
 
-- Bulleted
-- List
+## Who do I talk to?
+To get things approved for use on the rover talk to Greg, He is the software lead and must approve any/all files.
 
-1. Numbered
-2. List
+## Revision control
+To make sure we keep track of everything thats going on the rover we are implementing a basic revision control in 3 groups.
 
-**Bold** and _Italic_ and `Code` text
+### REVISION 1
+This is unapproved by the software lead, this is for WIP Items. Things that are in this category might not even compile. To get a rev 1 file to rev 2 it needs to be well commented, have a wiki page, clearly indicate sources (for math or datasheets), and must fit with the current setup ie. must not conflict with any rev 2 or rev 3 designs. Meeting all of these critera, you can contact the software lead and only he can approve something to rev 2 or higher.
 
-[Link](url) and ![Image](src)
-```
+### REVISION 2
+This is approved by our software lead for use on the rover. However things in revision 2 have not been testing with the sensors on the rover. So think of this revision as good to go, but untested with hardware.
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### REVISION 3
+This is after it has passed the hardware integration tests. So it is confirmed and working. Only things in revision 3 will be on the final rover.
 
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Uvic-Robotics-Club/Rover-ROS/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
