@@ -1,4 +1,4 @@
-# Welcome to the UVIC ROBOTICS Rover-ROS page
+# Welcome to the UVIC ROBOTICS Rover page
 
 A breakdown of the ROS Files will be in the wiki. The wiki should be updated so that people can get a clear understanding of what we are doing and what still needs to be done. 
 
