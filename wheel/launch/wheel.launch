@@ -1,0 +1,9 @@
+<launch>
+	<param name="motor" type="string" value="motor_1"/>
+	<node name="m_1_send" pkg="wheel" type="sending" />
+	
+	<param name="motor" value="motor_2"/>
+	<node name="m_2_send" pkg="wheel" type="sending"/>
+	
+	<node name="m_1_listen" pkg="wheel" type="receiving" />
+</launch>
