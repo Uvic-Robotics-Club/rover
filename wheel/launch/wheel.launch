@@ -1,9 +1,29 @@
 <launch>
-	<param name="motor" type="string" value="motor_1"/>
-	<node name="m_1_send" pkg="wheel" type="sending" />
+	<!-- All parameters are defined as private to avoid confusion -->
+
+	<node name="m_1" pkg="wheel" type="sending" >
+		<param name="motor" value="motor_1"/>
+	</node>
+
 	
-	<param name="motor" value="motor_2"/>
-	<node name="m_2_send" pkg="wheel" type="sending"/>
+	<node name="m_2" pkg="wheel" type="sending" >
+		<param name="motor" value="motor_2"/>
+	</node>
 	
-	<node name="m_1_listen" pkg="wheel" type="receiving" />
+	<node name="m_3" pkg="wheel" type="sending" >
+		<param name="motor" value="motor_3" />
+	</node>
+	
+	<node name="m_4" pkg="wheel" type="sending" >
+		<param name="motor" value="motor_4" />
+	</node>
+	
+	<node name="m_5" pkg="wheel" type="sending" >
+		<param name="motor" value="motor_5" />
+	</node>
+	
+	<node name="m_6" pkg="wheel" type="sending" >
+		<param name="motor" value="motor_6" />
+	</node>
+
 </launch>
