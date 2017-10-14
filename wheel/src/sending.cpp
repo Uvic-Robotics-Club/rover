@@ -22,6 +22,7 @@ typedef geometry_msgs::Accel Accel;
 void setpointCallback(const std_msgs::Float32ConstPtr& msg)
 {
 	Setpoint = msg->data;
+	ROS_INFO("Updating the setpoint to %.3f",Setpoint);
 }
 
 

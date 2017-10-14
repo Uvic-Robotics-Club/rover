@@ -25,5 +25,11 @@
 	<node name="m_6" pkg="wheel" type="sending" >
 		<param name="motor" value="motor_6" />
 	</node>
+	
+	<node name="USB_NODE_1" pkg="rosserial_python" type="serial_node.py" args="/dev/ttyUSB0" >
+	</node>
+	
+	<!-- node name="USB_NODE_2" pkg="rosserial_python" type="serial_node.py" args="/dev/ttyACM0" -->
+	<!-- /node -->
 
 </launch>
