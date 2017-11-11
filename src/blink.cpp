@@ -10,13 +10,11 @@
 
 typedef ros::Publisher Publisher;
 typedef ros::Subscriber Subscriber;
-typedef geometry_msgs::Accel Accel;
 
 // callback for setting the "speed" of the motor.
 void setpointCallback(const std_msgs::Float32ConstPtr& msg)
 {
-	Setpoint = msg->data;
-	ROS_INFO("Updating the setpoint to %.3f",Setpoint);
+	ROS_INFO("Updating the setpoint to %.3f",msg);
 }
 
 
@@ -36,9 +34,14 @@ int main(int argc, char **argv)
 	std::string m;
 
 	// If a name has been specified in the launch file then use it
-	if(nh.hasParam("IMU_NUM")){
+	if(nh.hasParam("IMU_NUM"))
+	{
 		nh.getParam("IMU_NUM", m);
 		ROS_INFO("Creating a motor with the name of %s",m.c_str());
+	}
+	else
+	{
+		m = "blinky";
 	}
 
 	// setup publisher of data and Subscriber of data
