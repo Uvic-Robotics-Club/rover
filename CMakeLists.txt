@@ -20,4 +20,4 @@ target_link_libraries(wheel_receiving ${catkin_LIBRARIES})
 
 FIND_LIBRARY(WIRINGPI_LIBRARY wiringPi /home/wiringPi)
 add_executable(blink src/blink.cpp)
-target_link_libraries(blink ${catkin_LIBRARIES})
+target_link_libraries(blink ${catkin_LIBRARIES} ${WIRINGPI_LIBRARY})
