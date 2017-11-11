@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 	m = "blinky";
 
 	// setup publisher of data and Subscriber of data
-	Publisher pub = n.advertise<std_msgs::String>((m).c_str(), 1000);
+	Publisher pub = n.advertise<std_msgs::String>(m.c_str(), 1000);
 
 	// set how often you want the main loop to process in Hz
 	ros::Rate loop_rate(10);
