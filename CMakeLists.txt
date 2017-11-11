@@ -17,3 +17,7 @@ target_link_libraries(wheel_sending ${catkin_LIBRARIES})
 
 add_executable(wheel_receiving src/wheel_receiving.cpp)
 target_link_libraries(wheel_receiving ${catkin_LIBRARIES})
+
+FIND_LIBRARY(WIRINGPI_LIBRARY wiringPi /home/wiringPi)
+add_executable(blink src/blink.cpp)
+target_link_libraries(blink ${catkin_LIBRARIES})
