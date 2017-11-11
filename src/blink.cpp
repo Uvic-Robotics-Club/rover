@@ -1,6 +1,7 @@
 #include "ros/ros.h" // needed for everything
 #include "geometry_msgs/Accel.h" // needed for publishing data
 #include "std_msgs/Float32.h"// needed for the setpoint callback
+#include "std_msgs/String.h"
 #include "wiringPi.h"
 
 #include <sstream>
