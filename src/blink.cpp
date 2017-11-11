@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "wheelpub");
 
 	wiringPiSetup();//library setup function
-	pinMode(23,OUTPUT);//set pin GPX2.1 as output. Based on wiringPi
+	pinMode(4,OUTPUT);//set pin GPX2.1 as output. Based on wiringPi
 
 	// grab the public and private node handle
 	ros::NodeHandle n;
@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 
 	while (ros::ok())
 	{
-		digitalWrite(23,pin_status); //write data(binary) to pin
+		digitalWrite(4,pin_status); //write data(binary) to pin
 		pin_status = !pin_status;
 
 		// @see http://wiki.ros.org/roscpp/Overview/Callbacks%20and%20Spinning
