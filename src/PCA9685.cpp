@@ -80,7 +80,6 @@ int PCA9685Driver::read8(int reg)
 int main(){
   std::cout<< std::hex;
   wiringPiSetup();
-  std::cout << "the value returned is "<<<"\n";
   wiringPiI2CSetup(1);
   //wiringPiI2CSetupInterface()
   PCA9685Driver p = PCA9685Driver();
