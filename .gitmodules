@@ -1,3 +1,6 @@
 [submodule "Utilities"]
 	path = Utilities
 	url = https://github.com/Uvic-Robotics-Club/Utilities
+[submodule "pca9685"]
+	path = pca9685
+	url = https://github.com/Reinbert/pca9685
