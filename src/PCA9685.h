@@ -15,8 +15,7 @@ class PCA9685Driver
     int read8(int reg);
     int addr,freq;
     double prescaler;
-
-
+    
     /*
      * REGISTERS
      */
