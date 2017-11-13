@@ -2,7 +2,10 @@
 #include <unistd.h> // needed for usleep (UNIX ONLY)
 #include "PCA9685.h"
 #include <iostream>
+#include <stdio.h>
 
+#include <wiringPi.h>
+#include <wiringPiI2C.h>
 
 PCA9685Driver::PCA9685Driver()
 {
@@ -15,14 +18,14 @@ void PCA9685Driver::init(int address = 0x60)
   setALLPWM(0,0); // set all of the PWM channels to zero
   write8(MODE2, OUTDRV);
   write8(MODE1, ALLCALL);
-  // delay 5ms
+  delay(5);
   int mode1 = read8(MODE1);
   mode1 = mode1 | SLEEP; // force sleep high
   write8(MODE1, mode1); //set the device to sleep
-  // delay 5ms
+  delay(5);
   mode1 = mode1 ^ SLEEP; // make sure sleep is low
   write8(MODE1, mode1);
-  // delay 5ms
+  delay(5);
 }
 
 void PCA9685Driver::setPWMFreq(int freq)
@@ -39,7 +42,7 @@ void PCA9685Driver::setPWMFreq(int freq)
   write8(PRE_SCALE, freq);
   mode = mode ^ SLEEP; // force sleep back to low
   write8(MODE1, mode);
-  // delay 5ms
+  delay(5);
   write8(MODE1, mode | RESTART);
 
 }
@@ -63,18 +66,30 @@ void PCA9685Driver::setALLPWM(int on, int off)
 void PCA9685Driver::write8(int reg, int value)
 {
   std::cout << "Writing: reg is " << reg << " and the value is " << value << "\n";
+  wiringPiI2CWriteReg8(addr, reg, value);
+
 }
 
 int PCA9685Driver::read8(int reg)
 {
   std::cout << "Reading: reg is " << reg << "\n";
-  return 0xFF;
+  return wiringPiI2CReadReg8(addr,reg);
+
 }
 int main(){
+  wiringPiSetup();
+  if (wiringPiI2CSetup(0x60)==-1){
+    std::cout << "couldnt set up the i2c stuff, exiting\n";
+    return 0;
+  }
+
   PCA9685Driver p = PCA9685Driver();
+  std::cout << "init\n";
   p.init();
-  p.setPWM(1,0,810);
-  std::cout << "This is some text\n";
+  p.setPWMFreq(1000);
+  std::cout << "pwm\n";
+  p.setPWM(15,0,3000);
+
 
   return 0;
 }
