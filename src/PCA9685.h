@@ -10,12 +10,13 @@ class PCA9685Driver
     void setPWMFreq(int freq);
     void setPWM(int channel, int on, int off);
     void setALLPWM(int on, int off);
+    
   private:
     void write8(int reg, int value);
     int read8(int reg);
     int addr,freq;
     double prescaler;
-    
+
     /*
      * REGISTERS
      */

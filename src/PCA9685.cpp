@@ -82,7 +82,7 @@ int main(){
     std::cout << "couldnt set up the gpio stuff, exiting\n";
     return 0;
   }
-  if (wiringPiI2CSetup(0x60)==-1){
+  if (wiringPiI2CSetup(1)==-1){
     std::cout << "couldnt set up the i2c stuff, exiting\n";
     return 0;
   }
@@ -90,6 +90,7 @@ int main(){
   PCA9685Driver p = PCA9685Driver();
   std::cout << "init\n";
   p.init();
+  std::cout << "pwm freq\n";
   p.setPWMFreq(1000);
   std::cout << "pwm\n";
   p.setPWM(15,0,3000);
