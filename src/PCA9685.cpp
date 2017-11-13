@@ -1,5 +1,4 @@
 #include <math.h> // needed for floor
-#include <unistd.h> // needed for usleep (UNIX ONLY)
 #include "PCA9685.h"
 #include <iostream>
 #include <stdio.h>
@@ -18,14 +17,14 @@ void PCA9685Driver::init(int address = 0x60)
   setALLPWM(0,0); // set all of the PWM channels to zero
   write8(MODE2, OUTDRV);
   write8(MODE1, ALLCALL);
-  millis(5);
+  delay(5);
   int mode1 = read8(MODE1);
   mode1 = mode1 | SLEEP; // force sleep high
   write8(MODE1, mode1); //set the device to sleep
-  millis(5);
+  delay(5);
   mode1 = mode1 ^ SLEEP; // make sure sleep is low
   write8(MODE1, mode1);
-  millis(5);
+  delay(5);
 }
 
 void PCA9685Driver::setPWMFreq(int freq)
@@ -42,7 +41,7 @@ void PCA9685Driver::setPWMFreq(int freq)
   write8(PRE_SCALE, freq);
   mode = mode ^ SLEEP; // force sleep back to low
   write8(MODE1, mode);
-  millis(5);
+  delay(5);
   write8(MODE1, mode | RESTART);
 
 }
