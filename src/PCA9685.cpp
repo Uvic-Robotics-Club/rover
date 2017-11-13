@@ -76,15 +76,13 @@ int PCA9685Driver::read8(int reg)
   return read_red;
 
 }
+
 int main(){
   std::cout<< std::hex;
-
-  std::cout << "the value returned is "<<wiringPiSetup()<<"\n";
-  if (wiringPiI2CSetup(0)==-1){
-    std::cout << "couldnt set up the i2c stuff, exiting\n";
-    return 0;
-  }
-
+  wiringPiSetup();
+  std::cout << "the value returned is "<<<"\n";
+  wiringPiI2CSetup(1);
+  //wiringPiI2CSetupInterface()
   PCA9685Driver p = PCA9685Driver();
   std::cout << "init\n";
   p.init();
@@ -92,7 +90,6 @@ int main(){
   p.setPWMFreq(1000);
   std::cout << "pwm\n";
   p.setPWM(15,0,3000);
-
 
   return 0;
 }
