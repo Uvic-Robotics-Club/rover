@@ -76,7 +76,10 @@ int PCA9685Driver::read8(int reg)
 
 }
 int main(){
-  wiringPiSetup();
+  if (wiringPiSetup() == -1){
+    std::cout << "couldnt set up the gpio stuff, exiting\n";
+    return 0;
+  }
   if (wiringPiI2CSetup(0x60)==-1){
     std::cout << "couldnt set up the i2c stuff, exiting\n";
     return 0;
