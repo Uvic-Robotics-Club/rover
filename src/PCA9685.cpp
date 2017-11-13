@@ -82,9 +82,9 @@ int main(){
   wiringPiSetup();
   int pwm = wiringPiI2CSetup(0x60);
   std::cout << "PWM IS "<< pwm << "\n";
-  PCA9685Driver p = PCA9685Driver(pwm);
+  PCA9685Driver p = PCA9685Driver();
   std::cout << "init\n";
-  p.init();
+  p.init(pwm);
   std::cout << "pwm freq\n";
   p.setPWMFreq(1000);
   std::cout << "pwm\n";
