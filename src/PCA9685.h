@@ -1,154 +1,85 @@
 #ifndef TPCA9685_H
 #define TPCA9685_H
 
-/*
- * REGISTERS
- */
 
-// mode register 1
-#define MODE1 0x0
-// mode register 2
-#define MODE2 0x1
+class PCA9685Driver
+{
+  public:
+    PCA9685Driver();
+    void init(int address);
+    void setPWMFreq(int freq);
+    void setPWM(int channel, int on, int off);
+    void setALLPWM(int on, int off);
+  private:
+    void write8(int reg, int value);
+    int read8(int reg);
+    int addr,freq;
+    double prescaler;
 
-// i2c bus subaddress 1
-#define SUBADR1 0x2
-// i2c bus subaddress 2
-#define SUBADR2 0x3
-// i2c bus subaddress 3
-#define SUBADR3 0x4
 
-// LED All Call i2c bus address
-#define ALLCALLADR 0x5
+    /*
+     * REGISTERS
+     */
 
-// LEDN_ON_L is the delay on time
-// LEDN_ON_H is the time that the signal is high
-// LEDN_OFF_L
+    // mode register 1
+    static const int MODE1 = 0x0;
+    // mode register 2
+    static const int MODE2 = 0x1;
 
-// LED0 output and brightness control bytes 0-4
-#define LED0_ON_L 0x6
-#define LED0_ON_H 0x7
-#define LED0_OFF_L 0x8
-#define LED0_OFF_H 0x9
+    // i2c bus subaddress 1
+    static const int SUBADR1 = 0x2;
+    // i2c bus subaddress 2
+    static const int SUBADR2 = 0x3;
+    // i2c bus subaddress 3
+    static const int SUBADR3 = 0x4;
 
-// LED1 output and brightness control bytes 0-4
-#define LED1_ON_L 0xA
-#define LED1_ON_H 0xB
-#define LED1_OFF_L 0xC
-#define LED1_OFF_H 0xD
+    // LED All Call i2c bus address
+    static const int ALLCALLADR = 0x5;
 
-// LED2 output and brightness control bytes 0-4
-#define LED2_ON_L 0xE
-#define LED2_ON_H 0xF
-#define LED2_OFF_L 0x10
-#define LED2_OFF_H 0x11
+    // LEDN_ON_L is the delay on time 8 LSD
+    // LEDN_ON_H is the delay on time 4 MSD
+    // LEDN_OFF_L is the delay off time 8 LSD
+    // LEDN_OFF_H is the delay off time 4 MSD
 
-// LED3 output and brightness control bytes 0-4
-#define LED3_ON_L 0x12
-#define LED3_ON_H 0x13
-#define LED3_OFF_L 0x14
-#define LED3_OFF_H 0x15
+    // LED0 output and brightness control bytes 0-4
+    static const int LED0_ON_L = 0x6;
+    static const int LED0_ON_H = 0x7;
+    static const int LED0_OFF_L = 0x8;
+    static const int LED0_OFF_H = 0x9;
 
-// LED4 output and brightness control bytes 0-4
-#define LED4_ON_L 0x16
-#define LED4_ON_H 0x17
-#define LED4_OFF_L 0x18
-#define LED4_OFF_H 0x19
 
-// LED5 output and brightness control bytes 0-4
-#define LED5_ON_L 0x1A
-#define LED5_ON_H 0x1B
-#define LED5_OFF_L 0x1C
-#define LED5_OFF_H 0x1D
+    // load all the LEDn_ON/OFF_H/L registers
+    static const int ALL_LED_ON_L = 0xFA;
+    static const int ALL_LED_ON_H = 0xFB;
+    static const int ALL_LED_OFF_L = 0xFC;
+    static const int ALL_LED_OFF_H = 0xFD;
 
-// LED6 output and brightness control bytes 0-4
-#define LED6_ON_L 0x1E
-#define LED6_ON_H 0x1F
-#define LED6_OFF_L 0x20
-#define LED6_OFF_H 0x21
+    // prescaler for PWM output frequency
+    static const int PRE_SCALE = 0xFE;
+    // defines the test mode to be entered
+    static const int TestMode = 0xFF;
 
-// LED7 output and brightness control bytes 0-4
-#define LED7_ON_L 0x22
-#define LED7_ON_H 0x23
-#define LED7_OFF_L 0x24
-#define LED7_OFF_H 0x25
+    /*
+     * MODE1 register
+     */
 
-// LED8 output and brightness control bytes 0-4
-#define LED8_ON_L 0x26
-#define LED8_ON_H 0x27
-#define LED8_OFF_L 0x28
-#define LED8_OFF_H 0x29
+    static const int RESTART = 0x80;
+    static const int EXTCLK = 0x40;
+    static const int AI = 0x20;
+    static const int SLEEP = 0x10;
+    static const int SUB1 = 0x08;
+    static const int SUB2 = 0x04;
+    static const int SUB3 = 0x02;
+    static const int ALLCALL = 0x01;
 
-// LED9 output and brightness control bytes 0-4
-#define LED9_ON_L 0x2A
-#define LED9_ON_H 0x2B
-#define LED9_OFF_L 0x2C
-#define LED9_OFF_H 0x2D
+    /*
+     * MODE2 register
+     */
+    static const int INVRT = 0x4;
+    static const int OCH = 0x3;
+    static const int OUTDRV = 0x2;
+    static const int OUTNE = 0x1;
 
-// LED10 output and brightness control bytes 0-4
-#define LED10_ON_L 0x2E
-#define LED10_ON_H 0x2F
-#define LED10_OFF_L 0x30
-#define LED10_OFF_H 0x31
+};
 
-// LED9 output and brightness control bytes 0-4
-#define LED11_ON_L 0x32
-#define LED11_ON_H 0x33
-#define LED11_OFF_L 0x34
-#define LED11_OFF_H 0x35
-
-// LED9 output and brightness control bytes 0-4
-#define LED12_ON_L 0x36
-#define LED12_ON_H 0x37
-#define LED12_OFF_L 0x38
-#define LED12_OFF_H 0x39
-
-// LED9 output and brightness control bytes 0-4
-#define LED13_ON_L 0x3A
-#define LED13_ON_H 0x3B
-#define LED13_OFF_L 0x3C
-#define LED13_OFF_H 0x3D
-
-// LED9 output and brightness control bytes 0-4
-#define LED14_ON_L 0x3E
-#define LED14_ON_H 0x3F
-#define LED14_OFF_L 0x40
-#define LED14_OFF_H 0x41
-
-// LED9 output and brightness control bytes 0-4
-#define LED15_ON_L 0x42
-#define LED15_ON_H 0x43
-#define LED15_OFF_L 0x44
-#define LED15_OFF_H 0x45
-
-// load all the LEDn_ON/OFF_H/L registers
-#define ALL_LED_ON_L 0xFA
-#define ALL_LED_ON_H 0xFB
-#define ALL_LED_OFF_L 0xFC
-#define ALL_LED_OFF_H 0xFD
-
-// prescaler for PWM output frequency
-#define PRE_SCALE 0xFE
-// defines the test mode to be entered
-#define TestMode 0xFF
-
-/*
- * MODE1 register
- */
-
-#define RESTART 0x7
-#define EXTCLK 0x6
-#define AI 0x5
-#define SLEEP 0x4
-#define SUB1 0x3
-#define SUB2 0x2
-#define SUB3 0x1
-#define ALLCALL 0x0
-
-/*
- * MODE2 register
- */
-#define INVRT 0x4
-#define OCH 0x3
-#define OUTDRV 0x2
-#define OUTNE 0x1
 #endif
