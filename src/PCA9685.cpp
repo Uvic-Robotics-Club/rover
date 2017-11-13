@@ -17,14 +17,14 @@ void PCA9685Driver::init(int address = 0x60)
   setALLPWM(0,0); // set all of the PWM channels to zero
   write8(MODE2, OUTDRV);
   write8(MODE1, ALLCALL);
-  delay(5);
+  delay(500);
   int mode1 = read8(MODE1);
   mode1 = mode1 | SLEEP; // force sleep high
   write8(MODE1, mode1); //set the device to sleep
-  delay(5);
+  delay(500);
   mode1 = mode1 ^ SLEEP; // make sure sleep is low
   write8(MODE1, mode1);
-  delay(5);
+  delay(500);
 }
 
 void PCA9685Driver::setPWMFreq(int freq)
@@ -41,7 +41,7 @@ void PCA9685Driver::setPWMFreq(int freq)
   write8(PRE_SCALE, freq);
   mode = mode ^ SLEEP; // force sleep back to low
   write8(MODE1, mode);
-  delay(5);
+  delay(500);
   write8(MODE1, mode | RESTART);
 
 }
