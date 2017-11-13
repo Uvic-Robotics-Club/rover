@@ -71,7 +71,7 @@ void PCA9685Driver::write8(int reg, int value)
 
 int PCA9685Driver::read8(int reg)
 {
-  int read_red = wiringPiI2CReadReg8(addr,reg);
+  unsigned int read_red = wiringPiI2CReadReg8(addr,reg);
   std::cout << "Reading: reg is " << read_red << "\n";
   return read_red;
 
