@@ -1,24 +1,20 @@
 #include "interruptable.h"
 #include "Arduino.h"
 
-InterruptHandler* Interruptable::interruptHandler = 0;
-
-Interruptable::Interruptable(int interruptPin, Interruptable::interruptModes interruptMode){
+Interruptable::Interruptable(interruptPins interruptPin, interruptModes interruptMode){
 
 	this->interruptPin = interruptPin;
 	this->interruptMode = interruptMode;
 
-	//if interrupthandler doesn't exist, create one
-	//always add this interruptable to the handler
-	if(!interruptHandler)
-		interruptHandler = new InterruptHandler();
-
+	//add to the interrupt handler
+	InterruptHandler* interruptHandler = InterruptHandler::getInstance();
 	interruptHandler->addInterruptable(this);
 }
 
 Interruptable::~Interruptable(){
 
 	//remove this from the interrupt handler
+	InterruptHandler* interruptHandler = InterruptHandler::getInstance();
 	interruptHandler->removeInterruptable(this);
 }
 
@@ -27,7 +23,12 @@ int Interruptable::getInterruptPin(){
 	return interruptPin;
 }
 
-Interruptable::interruptModes Interruptable::getInterruptMode(){
+int Interruptable::getInterruptMode(){
 
 	return interruptMode;
+}
+
+void Interruptable::onInterrupt(){
+
+
 }

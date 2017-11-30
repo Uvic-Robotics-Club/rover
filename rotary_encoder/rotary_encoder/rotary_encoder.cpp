@@ -1,8 +1,8 @@
 #include "rotary_encoder.h"
 #include "Arduino.h"
 
-RotaryEncoder::RotaryEncoder(int pollingChannelPin, RotaryEncoder::interruptPinOptions leadingChannelPin, bool clockwiseFwd)
-: Interruptable(leadingChannelPin, Interruptable::CHANGE)
+RotaryEncoder::RotaryEncoder(int pollingChannelPin, Interruptable::interruptPins leadingChannelPin, bool clockwiseFwd)
+: Interruptable(leadingChannelPin, Interruptable::INTERRUPT_HIGH)
 {
 
 	this->pollingChannelPin = pollingChannelPin;
@@ -27,13 +27,13 @@ long RotaryEncoder::last_read(){
 	return displayValue;
 }
 
-void RotaryEncoder::onRotaryTransition(){
+void RotaryEncoder::onInterrupt(){
 
 	//TODO: put more thought into this logic, pretty sure it's more complicated than this
-	if(digitalRead(instance->pollingChannelPin) == HIGH && instance->clockwiseFwd)
-		instance->pulseInc();
+	if(digitalRead(pollingChannelPin) == HIGH && clockwiseFwd)
+		pulseInc();
 	else
-		instance->pulseDec();
+		pulseDec();
 }
 
 void RotaryEncoder::pulseInc(){

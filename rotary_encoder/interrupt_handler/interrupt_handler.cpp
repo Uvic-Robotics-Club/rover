@@ -1,9 +1,19 @@
 #include "interrupt_handler.h"
 #include "Arduino.h"
 
-Interruptable::Interruptable(){
+InterruptHandler* InterruptHandler::instance = 0;
+
+InterruptHandler::InterruptHandler(){
 
 	//empty constructor for private declaration
+}
+
+InterruptHandler* InterruptHandler::getInstance(){
+
+	if(instance == 0)
+		instance = new InterruptHandler();
+
+	return instance;
 }
 
 bool InterruptHandler::addInterruptable(Interruptable* newInterruptable){
@@ -25,7 +35,7 @@ bool InterruptHandler::addInterruptable(Interruptable* newInterruptable){
 	if(success){
 
 		int pinCountIndex = 0;
-		switch(newInterruptable->interruptPin){
+		switch(newInterruptable->getInterruptPin()){
 
 			//TODO: add pp macros to determine board and interrupt pins
 			case Interruptable::INTERRUPT_A:
@@ -41,8 +51,8 @@ bool InterruptHandler::addInterruptable(Interruptable* newInterruptable){
 				break;
 		}
 
-		int pinCounts[] = 0;
-		switch(newInterruptable->interruptMode){
+		int* pinCounts = 0;
+		switch(newInterruptable->getInterruptMode()){
 
 			case Interruptable::INTERRUPT_LOW:
 				pinCounts = lowPinCounts;
@@ -60,19 +70,18 @@ bool InterruptHandler::addInterruptable(Interruptable* newInterruptable){
 				pinCounts = risingPinCounts;
 				break;
 
-			case Interruptable::INTERRUPT_CHANGE:
-				pinCounts = changePinCounts;
-				break;
-
 			default:
 				return false;
 				break;
 		}
 
 		//attach interrupt if first
+		// if(pinCounts[pinCountIndex] == 0)
+		// 	attachInterrupt(digitalPinToInterrupt(newInterruptable->getInterruptPin()),
+		// 		allInterrupts, newInterruptable->getInterruptMode());
 		if(pinCounts[pinCountIndex] == 0)
-			attachInterrupt(digitalPinToInterrupt(newInterruptable->interruptPin),
-				allInterrupts, newInterruptable->interruptMode);
+			attachInterrupt(digitalPinToInterrupt(2),
+				allInterrupts, HIGH);
 		pinCounts[pinCountIndex]++;
 
 		return true;
@@ -98,7 +107,7 @@ bool InterruptHandler::removeInterruptable(Interruptable* removeInterruptable){
 	if(isFound){
 
 		int pinCountIndex = 0;
-		switch(newInterruptable->interruptPin){
+		switch(removeInterruptable->getInterruptPin()){
 
 			//TODO: add pp macros to determine board and interrupt pins
 			case Interruptable::INTERRUPT_A:
@@ -114,8 +123,8 @@ bool InterruptHandler::removeInterruptable(Interruptable* removeInterruptable){
 				break;
 		}
 
-		int pinCounts[] = 0;
-		switch(newInterruptable->interruptMode){
+		int* pinCounts = 0;
+		switch(removeInterruptable->getInterruptMode()){
 
 			case Interruptable::INTERRUPT_LOW:
 				pinCounts = lowPinCounts;
@@ -133,10 +142,6 @@ bool InterruptHandler::removeInterruptable(Interruptable* removeInterruptable){
 				pinCounts = risingPinCounts;
 				break;
 
-			case Interruptable::INTERRUPT_CHANGE:
-				pinCounts = changePinCounts;
-				break;
-
 			default:
 				return false;
 				break;
@@ -145,7 +150,7 @@ bool InterruptHandler::removeInterruptable(Interruptable* removeInterruptable){
 		//negate this interruptable, reduce the pin count, and if empty remove listener
 		pinCounts[pinCountIndex]--;
 		if(pinCounts[pinCountIndex] == 0)
-			detachInterrupt(digitalPinToInterrupt(removeInterruptable->interruptPin));
+			detachInterrupt(digitalPinToInterrupt(removeInterruptable->getInterruptPin()));
 		removeInterruptable = 0;
 
 		return true;
@@ -157,7 +162,7 @@ bool InterruptHandler::removeInterruptable(Interruptable* removeInterruptable){
 void InterruptHandler::allInterrupts(){
 
 	//call 'onInterrupt' for each interruptable element at their selected mode
-	for(Interruptable* interruptable: interruptables){
+	for(Interruptable* interruptable: instance->interruptables){
 
 		interruptable->onInterrupt();
 	}

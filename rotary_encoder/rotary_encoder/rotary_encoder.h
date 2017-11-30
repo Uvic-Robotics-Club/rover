@@ -1,23 +1,20 @@
 #ifndef ROTARY_ENCODER_H
 #define ROTARY_ENCODER_H
 
-#include "interrupt_handler.h"
+#include "interruptable.h"
 #include "Arduino.h"
 
 class RotaryEncoder: Interruptable{
 
 public:
 
-	//TODO: add pp macros to determine board and interrupt pins
-	enum interruptPinOptions {INTERRUPT_A = 2, INTERRUPT_B = 3};
-
-	RotaryEncoder(int, enum interruptPinOptions, bool);
+	RotaryEncoder(int, Interruptable::interruptPins , bool);
 	long read();
 	long last_read();
 
 protected:
 
-	virtual void onInterrupt();
+	void onInterrupt();
 
 private:
 

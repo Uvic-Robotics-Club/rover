@@ -4,8 +4,6 @@
 #include "interrupt_handler.h"
 #include "Arduino.h"
 
-class InterruptHandler;
-
 class Interruptable{
 
 friend class InterruptHandler;
@@ -13,12 +11,13 @@ friend class InterruptHandler;
 public:
 
 	enum interruptModes {INTERRUPT_LOW = LOW, INTERRUPT_HIGH = HIGH,
-		INTERRUPT_RISING = RISING, INTERRUPT_FALLING = FALLING, INTERRUPT_CHANGE = CHANGE};
+		INTERRUPT_RISING = RISING, INTERRUPT_FALLING = FALLING};
+	enum interruptPins {INTERRUPT_A = 2, INTERRUPT_B = 3};
 
-	Interruptable(int, interruptModes);
+	Interruptable(interruptPins, interruptModes);
 	~Interruptable();
 	int getInterruptPin();
-	interruptModes getInterruptMode();
+	int getInterruptMode();
 
 protected:
 
@@ -26,9 +25,8 @@ protected:
 
 private:
 
-	static InterruptHandler* interruptHandler;
 	int interruptPin;
-	interruptModes interruptMode;
+	int interruptMode;
 };
 
 #endif
