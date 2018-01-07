@@ -101,7 +101,7 @@ class Callbacks:
 if __name__ == '__main__':
     try:
         rospy.loginfo("Getting all of the available ports")
-        DesiredMotor = 2
+        DesiredMotor = 1
         if rospy.has_param('~motor'):
             DesiredMotor = int(rospy.get_param("~motor"))
         rospy.loginfo( "Looking for motor {}".format(DesiredMotor))
