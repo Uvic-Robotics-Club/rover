@@ -6,6 +6,7 @@ find_package(catkin REQUIRED COMPONENTS
 	geometry_msgs
 	roscpp
 )
+catkin_python_setup()
 include_directories(${catkin_INCLUDE_DIRS})
 catkin_package()
 
