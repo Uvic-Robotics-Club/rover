@@ -2,7 +2,7 @@
 	<!-- All parameters are defined as private to avoid confusion -->
 
 	<node name="USB_MOTOR_DRIVERS" pkg="rover" type="USBMotors.py" >
-		<param name="motor" value=1/>
+		<param name="motor" value="1"/>
 	</node>
 
 </launch>
