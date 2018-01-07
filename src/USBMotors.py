@@ -94,7 +94,10 @@ if __name__ == '__main__':
         ports = list(list_ports.comports())
         for (port,name,PID) in ports:
             rospy.loginfo("Testing {} which is port: {}".format(name,port))
-            rospy.loginfo( "found the ardunio. opening comms")
+            if "USB" in name or "Arduino" in name or "CH340" in name:
+                rospy.loginfo( "found the ardunio. opening comms")
+            else:
+                continue
             temparduinoData = serial.Serial(port, 9600) #Creating our serial object
             arduinoString = temparduinoData.readline()
             rospy.loginfo(arduinoString.strip())
