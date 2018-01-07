@@ -34,15 +34,14 @@ def talker():
 def looper():
     global motors
     rate = rospy.Rate(100)
-    pub = rospy.Publisher('Motor{}/PID', Point, queue_size=10)
     for i in range(len(motors)):
         if motors[i] is None:
             continue
         while not rospy.is_shutdown():
             MotorData = motors[i].readline().strip().split(",")
-            #for j in range(len(MotorData)):
-            #    MotorData[j] = float(MotorData[j])
-            pub.publish(MotorData)
+            for j in range(len(MotorData)):
+                MotorData[j] = float(MotorData[j])
+
             rospy.loginfo( "Motor {} : {}".format(i, MotorData))
             rate.sleep()
         motors[i].close()
