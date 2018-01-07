@@ -115,7 +115,7 @@ if __name__ == '__main__':
             motorSubscribers = rospy.Subscriber('Motor{}/Ki'.format(DesiredMotor), Int32, motorCallbacks.Ki)
             motorSubscribers = rospy.Subscriber('Motor{}/Kd'.format(DesiredMotor), Int32, motorCallbacks.Kd)
             motorSubscribers = rospy.Subscriber('Motor{}/RefreshRate'.format(DesiredMotor), Int32, motorCallbacks.RefreshRate)
-            arduinoString = temparduinoData.readline()
+            arduinoString = motors.readline()
             rospy.loginfo(arduinoString.strip())
             looper()
             rospy.spin()
