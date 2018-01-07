@@ -9,9 +9,10 @@ find_package(catkin REQUIRED COMPONENTS
 )
 catkin_python_setup()
 include_directories(${catkin_INCLUDE_DIRS})
+generate_messages(DEPENDENCIES std_msgs geometry_msgs)
 catkin_package()
 
-generate_messages(DEPENDENCIES std_msgs geometry_msgs)
+
 
 # these are all of the nodes that I can call
 #add_executable(wheel_sending src/wheel_sending.cpp src/MiniPID.cpp)
