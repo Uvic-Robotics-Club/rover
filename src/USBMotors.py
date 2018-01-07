@@ -101,7 +101,7 @@ class Callbacks:
 if __name__ == '__main__':
     try:
         rospy.loginfo("Getting all of the available ports")
-        DesiredMotor = 1
+        DesiredMotor = 2
         if rospy.has_param('~motor'):
             DesiredMotor = int(rospy.get_param("~motor"))
         rospy.loginfo( "Looking for motor {}".format(DesiredMotor))
@@ -126,11 +126,11 @@ if __name__ == '__main__':
                 motors[MotorNumber] = temparduinoData
                 motorCallbacks[MotorNumber] = Callbacks(temparduinoData)
                 #motorPublishers[MotorNumber] = rospy.Publisher('Motor{}'.format(MotorNumber), String, queue_size=10)
-                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/Setpoint'.format(MotorNumber), Quaternion, motorCallbacks[MotorNumber].Setpoint)
-                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/Kp'.format(MotorNumber), Quaternion, motorCallbacks[MotorNumber].Kp)
-                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/Ki'.format(MotorNumber), Quaternion, motorCallbacks[MotorNumber].Ki)
-                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/Kd'.format(MotorNumber), Quaternion, motorCallbacks[MotorNumber].Kd)
-                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/RefreshRate'.format(MotorNumber), Quaternion, motorCallbacks[MotorNumber].Setpoint)
+                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/Setpoint'.format(MotorNumber), Int32, motorCallbacks[MotorNumber].Setpoint)
+                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/Kp'.format(MotorNumber), Int32, motorCallbacks[MotorNumber].Kp)
+                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/Ki'.format(MotorNumber), Int32, motorCallbacks[MotorNumber].Ki)
+                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/Kd'.format(MotorNumber), Int32, motorCallbacks[MotorNumber].Kd)
+                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/RefreshRate'.format(MotorNumber), Int32, motorCallbacks[MotorNumber].Setpoint)
             else:
                 temparduinoData.close()
         looper()
