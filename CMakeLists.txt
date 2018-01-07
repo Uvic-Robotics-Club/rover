@@ -2,9 +2,10 @@ cmake_minimum_required(VERSION 2.8.3)
 project(rover)
 
 find_package(catkin REQUIRED COMPONENTS
-	std_msgs
-	geometry_msgs
-	roscpp
+    std_msgs
+    geometry_msgs
+    roscpp
+    rospy
 )
 catkin_python_setup()
 include_directories(${catkin_INCLUDE_DIRS})
