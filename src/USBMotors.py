@@ -41,7 +41,6 @@ def looper():
             MotorData = motors[i].readline().strip().split(",")
             for j in range(len(MotorData)):
                 MotorData[j] = float(MotorData[j])
-
             rospy.loginfo( "Motor {} : {}".format(i, MotorData))
             rate.sleep()
         motors[i].close()
@@ -131,7 +130,7 @@ if __name__ == '__main__':
                 motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/Kp'.format(MotorNumber), Int32, motorCallbacks[MotorNumber].Kp)
                 motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/Ki'.format(MotorNumber), Int32, motorCallbacks[MotorNumber].Ki)
                 motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/Kd'.format(MotorNumber), Int32, motorCallbacks[MotorNumber].Kd)
-                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/RefreshRate'.format(MotorNumber), Int32, motorCallbacks[MotorNumber].Setpoint)
+                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/RefreshRate'.format(MotorNumber), Int32, motorCallbacks[MotorNumber].RefreshRate)
             else:
                 temparduinoData.close()
         looper()
