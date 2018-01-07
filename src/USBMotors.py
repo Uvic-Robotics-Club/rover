@@ -53,9 +53,9 @@ class Callbacks:
     def Setpoint(self, value):
         rospy.loginfo(rospy.get_caller_id() + "I heard {},{},{},{}".format(value.x, value.y, value.z, value.w))
         try:
-            self.ardu.write("s{}".format(value))
+            self.ardu.write("s{}".format(value.x))
             self.ardu.flush()
-            rospy.loginfo( "Changing the setpoint to {}".format(value))
+            rospy.loginfo( "Changing the setpoint to {}".format(value.x))
         except Exception as e:
             rospy.loginfo( "Setpoint CALLBACK ERROR: ")
             rospy.loginfo( e.message)
