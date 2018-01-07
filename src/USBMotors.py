@@ -9,7 +9,9 @@ Created on Sat Jan 06 14:46:14 2018
 import rospy
 import sys
 from std_msgs.msg import String
+from std_msgs.msg import Int32
 from geometry_msgs.msg import Quaternion
+from geometry_msgs.msg import Point
 import serial # import Serial Library
 import serial.tools.list_ports as list_ports
 import string
@@ -32,16 +34,18 @@ def talker():
 def looper():
     global motors
     rate = rospy.Rate(100)
-    while not rospy.is_shutdown():
-        for i in range(len(motors)):
-            if motors[i] is None:
-                continue
+    pub = rospy.Publisher('Motor{}/PID', Point, queue_size=10)
+    for i in range(len(motors)):
+        if motors[i] is None:
+            continue
+        while not rospy.is_shutdown():
             MotorData = motors[i].readline().strip().split(",")
             for j in range(len(MotorData)):
                 MotorData[j] = float(MotorData[j])
+            pub.publish(MotorData)
             rospy.loginfo( "Motor {} : {}".format(i, MotorData))
-        #pub.publish(hello_str)
-        rate.sleep()
+            rate.sleep()
+        motors[i].close()
 
 def callback(data):
     rospy.loginfo(rospy.get_caller_id() + "I heard {},{},{},{}".format(data.x, data.y, data.z, data.w))
@@ -51,20 +55,19 @@ class Callbacks:
         self.ardu = localArduino
 
     def Setpoint(self, value):
-        rospy.loginfo(rospy.get_caller_id() + "I heard {},{},{},{}".format(value.x, value.y, value.z, value.w))
         try:
-            self.ardu.write("s{}".format(value.x))
+            self.ardu.write("s{}".format(value.data))
             self.ardu.flush()
-            rospy.loginfo( "Changing the setpoint to {}".format(value.x))
+            rospy.loginfo( "Changing the setpoint to {}".format(value.data))
         except Exception as e:
             rospy.loginfo( "Setpoint CALLBACK ERROR: ")
             rospy.loginfo( e.message)
 
     def Kp(self,value):
         try:
-            self.ardu.write("p{}".format(value))
+            self.ardu.write("p{}".format(value.data))
             self.ardu.flush()
-            rospy.loginfo( "sending Kp value of {}".format(value))
+            rospy.loginfo( "sending Kp value of {}".format(value.data))
 
         except Exception as e:
             rospy.loginfo( "Kp CALLBACK ERROR: ")
@@ -72,20 +75,28 @@ class Callbacks:
 
     def Kd(self,value):
         try:
-            self.ardu.write("d{}".format(value))
+            self.ardu.write("d{}".format(value.data))
             self.ardu.flush()
-            rospy.loginfo( "sending Kd value of {}".format(value))
+            rospy.loginfo( "sending Kd value of {}".format(value.data))
         except Exception as e:
             rospy.loginfo( "Kd CALLBACK ERROR: ")
             rospy.loginfo( e.message)
 
     def Ki(self,value):
         try:
-            self.ardu.write("i{}".format(value))
+            self.ardu.write("i{}".format(value.data))
             self.ardu.flush()
-            rospy.loginfo( "sending Ki value of {}".format(value))
+            rospy.loginfo( "sending Ki value of {}".format(value.data))
         except Exception as e:
             rospy.loginfo( "Ki CALLBACK ERROR: ")
+            rospy.loginfo( e.message)
+    def RefreshRate(self,value):
+        try:
+            self.ardu.write("r{}".format(value.data))
+            self.ardu.flush()
+            rospy.loginfo( "sending RefreshRate value of {}".format(value.data))
+        except Exception as e:
+            rospy.loginfo( "RefreshRate CALLBACK ERROR: ")
             rospy.loginfo( e.message)
 
 if __name__ == '__main__':
@@ -116,7 +127,11 @@ if __name__ == '__main__':
                 motors[MotorNumber] = temparduinoData
                 motorCallbacks[MotorNumber] = Callbacks(temparduinoData)
                 #motorPublishers[MotorNumber] = rospy.Publisher('Motor{}'.format(MotorNumber), String, queue_size=10)
-                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}'.format(MotorNumber), Quaternion, motorCallbacks[MotorNumber].Setpoint)
+                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/Setpoint'.format(MotorNumber), Quaternion, motorCallbacks[MotorNumber].Setpoint)
+                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/Kp'.format(MotorNumber), Quaternion, motorCallbacks[MotorNumber].Kp)
+                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/Ki'.format(MotorNumber), Quaternion, motorCallbacks[MotorNumber].Ki)
+                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/Kd'.format(MotorNumber), Quaternion, motorCallbacks[MotorNumber].Kd)
+                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}/RefreshRate'.format(MotorNumber), Quaternion, motorCallbacks[MotorNumber].Setpoint)
             else:
                 temparduinoData.close()
         looper()

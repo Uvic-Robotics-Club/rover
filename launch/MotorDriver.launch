@@ -1,8 +1,23 @@
 <launch>
 	<!-- All parameters are defined as private to avoid confusion -->
 
-	<node name="USB_MOTOR_DRIVERS" pkg="rover" type="USBMotors.py" >
+	<node name="Motor1" pkg="rover" type="USBMotors.py" >
 		<param name="motor" value="1"/>
+	</node>
+	<node name="Motor2" pkg="rover" type="USBMotors.py" >
+		<param name="motor" value="2"/>
+	</node>
+	<node name="Motor3" pkg="rover" type="USBMotors.py" >
+		<param name="motor" value="3"/>
+	</node>
+	<node name="Motor4" pkg="rover" type="USBMotors.py" >
+		<param name="motor" value="4"/>
+	</node>
+	<node name="Motor5" pkg="rover" type="USBMotors.py" >
+		<param name="motor" value="5"/>
+	</node>
+	<node name="Motor6" pkg="rover" type="USBMotors.py" >
+		<param name="motor" value="6"/>
 	</node>
 
 </launch>
