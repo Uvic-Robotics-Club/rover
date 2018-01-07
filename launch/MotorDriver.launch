@@ -4,11 +4,6 @@
 	<node name="Motor1" pkg="rover" type="USBMotors.py" >
 		<param name="motor" value="1"/>
 	</node>
-	<node name="Motor2" pkg="rover" type="USBMotors.py" >
-		<param name="motor" value="2"/>
-	</node>
-	<node name="Motor3" pkg="rover" type="USBMotors.py" >
-		<param name="motor" value="3"/>
-	</node>
+
 
 </launch>
