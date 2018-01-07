@@ -51,6 +51,7 @@ class Callbacks:
         self.ardu = localArduino
 
     def Setpoint(self, value):
+        rospy.loginfo(rospy.get_caller_id() + "I heard {},{},{},{}".format(value.x, value.y, value.z, value.w))
         try:
             self.ardu.write("s{}".format(value))
             self.ardu.flush()
@@ -109,7 +110,7 @@ if __name__ == '__main__':
                 motors[MotorNumber] = temparduinoData
                 motorCallbacks[MotorNumber] = Callbacks(temparduinoData)
                 #motorPublishers[MotorNumber] = rospy.Publisher('Motor{}'.format(MotorNumber), String, queue_size=10)
-                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}'.format(MotorNumber), Quaternion, callback)
+                motorSubscribers[MotorNumber] = rospy.Subscriber('Motor{}'.format(MotorNumber), Quaternion, motorCallbacks[MotorNumber].Setpoint)
             else:
                 temparduinoData.close()
         looper()
