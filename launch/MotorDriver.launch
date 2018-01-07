@@ -1,0 +1,8 @@
+<launch>
+	<!-- All parameters are defined as private to avoid confusion -->
+
+	<node name="USB_MOTOR_DRIVERS" pkg="rover" type="USBMotors.py" >
+
+	</node>
+
+</launch>
