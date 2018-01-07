@@ -91,7 +91,9 @@ class Callbacks:
 if __name__ == '__main__':
     try:
         rospy.loginfo("Getting all of the available ports")
-        DesiredMotor = rospy.get_param("~motor")
+        DesiredMotor = 1
+        if rospy.has_param('~motor'):
+            DesiredMotor = rospy.get_param("~motor")
         rospy.loginfo( "Looking for motor {}".format(DesiredMotor))
         rospy.init_node('USBMotors', anonymous=True)
         ports = list(list_ports.comports())
