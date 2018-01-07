@@ -90,7 +90,9 @@ class Callbacks:
 
 if __name__ == '__main__':
     try:
-        rospy.loginfo( "Getting all of the available ports");
+        rospy.loginfo("Getting all of the available ports")
+        DesiredMotor = rospy.get_param("~motor")
+        rospy.loginfo( "Looking for motor {}".format(DesiredMotor))
         rospy.init_node('USBMotors', anonymous=True)
         ports = list(list_ports.comports())
         for (port,name,PID) in ports:
@@ -107,6 +109,8 @@ if __name__ == '__main__':
                 nodigs=all.translate(all, string.digits)
                 arduinoString=arduinoString.translate(all, nodigs)
                 MotorNumber = int(arduinoString)
+                if MotorNumber != DesiredMotor:
+                    continue
                 motors[MotorNumber] = temparduinoData
                 motorCallbacks[MotorNumber] = Callbacks(temparduinoData)
                 #motorPublishers[MotorNumber] = rospy.Publisher('Motor{}'.format(MotorNumber), String, queue_size=10)
