@@ -105,7 +105,7 @@ if __name__ == '__main__':
             rospy.loginfo("Looking for motor {}".format(DesiredMotor))
 
         if rospy.has_param('~port'):
-            DesiredPort = int(rospy.get_param("~port"))
+            DesiredPort = rospy.get_param("~port")
             rospy.loginfo("Setting my port to {} and the motor number to {}".format(DesiredPort, DesiredMotor))
             motors = serial.Serial(DesiredPort, 9600)
             motorCallbacks = Callbacks(motors)
