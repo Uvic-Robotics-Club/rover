@@ -96,10 +96,11 @@ def map(value,linput,uinput,loutput,uoutput):
 def dictMoveMotors(receivedData):
     #for key in receivedData:
     #    receivedData[key] = int(receivedData[key])
+    rospy.loginfo("{}".format(receivedData))
     for key in receivedData:
-        sys.stdout.write("TRYING TO PUBLISH {} to {}\n".format(receivedData[key],key))
+        rospy.loginfo("TRYING TO PUBLISH {} to {}\n".format(receivedData[key],key))
         motors[key].publish("{}".format(int(receivedData[key])))
-        sys.stdout.write("PUBLISHED {} to {}\n".format(receivedData[key],key))
+        rospy.loginfo("PUBLISHED {} to {}\n".format(receivedData[key],key))
 
 
 
@@ -109,6 +110,7 @@ if(__name__=="__main__"):
             "M2":rospy.Publisher("Motor2/Setpoint", Int32, queue_size=10),
             "M3":rospy.Publisher("Motor3/Setpoint", Int32, queue_size=10),
             "M4":rospy.Publisher("Motor4/Setpoint", Int32, queue_size=10)}
+
     threads = []
     t2 = threading.Thread(target=readStuff)
 
