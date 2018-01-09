@@ -3,15 +3,19 @@
 
 	<node name="Motor1" pkg="rover" type="USBMotors.py" >
 		<param name="~motor" value="1"/>
-		<param name="~port" value="/dev/ttyUSB3"/>
+		<param name="~port" value="/dev/ttyUSB0"/>
 	</node>
 	<node name="Motor2" pkg="rover" type="USBMotors.py" >
 		<param name="~motor" value="2"/>
-		<param name="~port" value="/dev/ttyUSB4"/>
+		<param name="~port" value="/dev/ttyUSB1"/>
 	</node>
 	<node name="Motor3" pkg="rover" type="USBMotors.py" >
 		<param name="~motor" value="3"/>
-		<param name="~port" value="/dev/ttyUSB5"/>
+		<param name="~port" value="/dev/ttyUSB2"/>
+	</node>
+    <node name="Motor3" pkg="rover" type="USBMotors.py" >
+		<param name="~motor" value="3"/>
+		<param name="~port" value="/dev/ttyUSB3"/>
 	</node>
 
 </launch>

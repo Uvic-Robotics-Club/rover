@@ -109,6 +109,8 @@ if __name__ == '__main__':
             DesiredPort = rospy.get_param("~port")
             rospy.loginfo("Setting my port to {} and the motor number to {}".format(DesiredPort, DesiredMotor))
             motors = serial.Serial(DesiredPort, 9600)
+            arduinoString = motors.readline()
+            rospy.loginfo(arduinoString.strip())
             if "Motor:" in arduinoString:
                 all=string.maketrans('','')
                 nodigs=all.translate(all, string.digits)
@@ -122,8 +124,7 @@ if __name__ == '__main__':
             motorSubscribers = rospy.Subscriber('Motor{}/Ki'.format(MotorNumber), Int32, motorCallbacks.Ki)
             motorSubscribers = rospy.Subscriber('Motor{}/Kd'.format(MotorNumber), Int32, motorCallbacks.Kd)
             motorSubscribers = rospy.Subscriber('Motor{}/RefreshRate'.format(MotorNumber), Int32, motorCallbacks.RefreshRate)
-            arduinoString = motors.readline()
-            rospy.loginfo(arduinoString.strip())
+
             looper()
             rospy.spin()
 
