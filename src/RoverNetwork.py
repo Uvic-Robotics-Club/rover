@@ -98,8 +98,7 @@ def dictMoveMotors(receivedData):
     #    receivedData[key] = int(receivedData[key])
     rospy.loginfo("{}".format(receivedData))
     for key in receivedData:
-        rospy.loginfo("TRYING TO PUBLISH {} to {}\n".format(receivedData[key],key))
-        motors[key].publish("{}".format(int(receivedData[key])))
+        motors[key].publish("%d"%(receivedData[key]))
         rospy.loginfo("PUBLISHED {} to {}\n".format(receivedData[key],key))
 
 
