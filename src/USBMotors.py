@@ -53,7 +53,7 @@ class Callbacks:
 
     def Setpoint(self, value):
         try:
-            self.ardu.write("s{:d}".format(value.data))
+            self.ardu.write("s{}".format(int(value.data)))
             self.ardu.flush()
             rospy.loginfo( "Changing the setpoint to {}".format(value.data))
         except Exception as e:
@@ -62,7 +62,7 @@ class Callbacks:
 
     def Kp(self,value):
         try:
-            self.ardu.write("p{:d}".format(value.data))
+            self.ardu.write("p{}".format(int(value.data)))
             self.ardu.flush()
             rospy.loginfo( "sending Kp value of {}".format(value.data))
 
