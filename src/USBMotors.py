@@ -18,8 +18,8 @@ import string
 
 motors = None
 motorCallbacks = None
-motorPublishers = None
-motorSubscribers = None
+motorPublisher = None
+motorSubscriber = None
 
 def talker():
     pub = rospy.Publisher('chatter', String, queue_size=10)
@@ -37,9 +37,10 @@ def looper():
     while not rospy.is_shutdown():
         if(motors.in_waiting == 0):
             MotorData = motors.readline().strip().split(",")
+            motorPublisher.publish(MotorData)
             for j in range(len(MotorData)):
                 MotorData[j] = float(MotorData[j])
-            rospy.loginfo("{} : {}".format(rospy.get_caller_id(), MotorData))
+            #rospy.loginfo("{} : {}".format(rospy.get_caller_id(), MotorData))
         rate.sleep()
     motors.close()
 
@@ -108,13 +109,19 @@ if __name__ == '__main__':
             DesiredPort = rospy.get_param("~port")
             rospy.loginfo("Setting my port to {} and the motor number to {}".format(DesiredPort, DesiredMotor))
             motors = serial.Serial(DesiredPort, 9600)
+            if "Motor:" in arduinoString:
+                all=string.maketrans('','')
+                nodigs=all.translate(all, string.digits)
+                arduinoString=arduinoString.translate(all, nodigs)
+                MotorNumber = int(arduinoString)
+
             motorCallbacks = Callbacks(motors)
-            #motorPublishers[MotorNumber] = rospy.Publisher('Motor{}'.format(MotorNumber), String, queue_size=10)
-            motorSubscribers = rospy.Subscriber('Motor{}/Setpoint'.format(DesiredMotor), Int32, motorCallbacks.Setpoint)
-            motorSubscribers = rospy.Subscriber('Motor{}/Kp'.format(DesiredMotor), Int32, motorCallbacks.Kp)
-            motorSubscribers = rospy.Subscriber('Motor{}/Ki'.format(DesiredMotor), Int32, motorCallbacks.Ki)
-            motorSubscribers = rospy.Subscriber('Motor{}/Kd'.format(DesiredMotor), Int32, motorCallbacks.Kd)
-            motorSubscribers = rospy.Subscriber('Motor{}/RefreshRate'.format(DesiredMotor), Int32, motorCallbacks.RefreshRate)
+            motorPublisher = rospy.Publisher('Motor{}'.format(MotorNumber), String, queue_size=10)
+            motorSubscribers = rospy.Subscriber('Motor{}/Setpoint'.format(MotorNumber), Int32, motorCallbacks.Setpoint)
+            motorSubscribers = rospy.Subscriber('Motor{}/Kp'.format(MotorNumber), Int32, motorCallbacks.Kp)
+            motorSubscribers = rospy.Subscriber('Motor{}/Ki'.format(MotorNumber), Int32, motorCallbacks.Ki)
+            motorSubscribers = rospy.Subscriber('Motor{}/Kd'.format(MotorNumber), Int32, motorCallbacks.Kd)
+            motorSubscribers = rospy.Subscriber('Motor{}/RefreshRate'.format(MotorNumber), Int32, motorCallbacks.RefreshRate)
             arduinoString = motors.readline()
             rospy.loginfo(arduinoString.strip())
             looper()
@@ -131,11 +138,7 @@ if __name__ == '__main__':
             temparduinoData = serial.Serial(port, 9600) #Creating our serial object
             arduinoString = temparduinoData.readline()
             rospy.loginfo(arduinoString.strip())
-            if "Motor:" in arduinoString:
-                all=string.maketrans('','')
-                nodigs=all.translate(all, string.digits)
-                arduinoString=arduinoString.translate(all, nodigs)
-                MotorNumber = int(arduinoString)
+
                 if MotorNumber != DesiredMotor:
                     continue
                 motors = temparduinoData
