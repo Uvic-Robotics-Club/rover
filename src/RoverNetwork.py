@@ -9,16 +9,16 @@ import rospy
 import socket
 import sys
 import json
-import math
-import atexit
+
 import time
 import threading
-import numpy as np
+
 from std_msgs.msg import String
 from std_msgs.msg import Int32
 from geometry_msgs.msg import Quaternion
 from geometry_msgs.msg import Point
 
+totalExit = False
 
 
 def readStuff():
