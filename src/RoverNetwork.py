@@ -99,7 +99,7 @@ def dictMoveMotors(receivedData):
     for key in receivedData:
         sys.stdout.write("TRYING TO PUBLISH {} to {}\n".format(receivedData[key],key))
         motors[key].publish("{}".format(receivedData[key]))
-         sys.stdout.write("PUBLISHED {} to {}\n".format(receivedData[key],key))
+        sys.stdout.write("PUBLISHED {} to {}\n".format(receivedData[key],key))
 
 
 
