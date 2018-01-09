@@ -94,11 +94,11 @@ def map(value,linput,uinput,loutput,uoutput):
 
 
 def dictMoveMotors(receivedData):
-    for key in receivedData:
-        receivedData[key] = int(receivedData[key])
+    #for key in receivedData:
+    #    receivedData[key] = int(receivedData[key])
     for key in receivedData:
         sys.stdout.write("TRYING TO PUBLISH {} to {}\n".format(receivedData[key],key))
-        motors[key].publish("{}".format(receivedData[key]))
+        motors[key].publish("{}".format(int(receivedData[key])))
         sys.stdout.write("PUBLISHED {} to {}\n".format(receivedData[key],key))
 
 
