@@ -46,6 +46,8 @@ def readStuff():
 
     PORT = 314
     loop1 = True
+    sys.stdout.write("about to connect to the server\n")
+    sys.stdout.flush()
     while loop1 and not totalExit:
         loop2 = True
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
