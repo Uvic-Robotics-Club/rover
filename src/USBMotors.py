@@ -118,7 +118,7 @@ if __name__ == '__main__':
                 MotorNumber = int(arduinoString)
 
             motorCallbacks = Callbacks(motors)
-            motorPublisher = rospy.Publisher('Motor{}'.format(MotorNumber), String, queue_size=10)
+            motorPublisher = rospy.Publisher('Motor{}/Output'.format(MotorNumber), String, queue_size=10)
             motorSubscribers = rospy.Subscriber('Motor{}/Setpoint'.format(MotorNumber), Int32, motorCallbacks.Setpoint)
             motorSubscribers = rospy.Subscriber('Motor{}/Kp'.format(MotorNumber), Int32, motorCallbacks.Kp)
             motorSubscribers = rospy.Subscriber('Motor{}/Ki'.format(MotorNumber), Int32, motorCallbacks.Ki)
