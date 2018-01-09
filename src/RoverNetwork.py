@@ -99,7 +99,7 @@ def dictMoveMotors(receivedData):
     rospy.loginfo("{}".format(receivedData))
     for key in receivedData:
         motors[key].publish("%d"%(receivedData[key]))
-        rospy.loginfo("PUBLISHED {} to {}\n".format(receivedData[key],key))
+        #rospy.loginfo("PUBLISHED {} to {}\n".format(receivedData[key],key))
 
 
 

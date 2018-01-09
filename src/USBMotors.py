@@ -53,7 +53,7 @@ class Callbacks:
 
     def Setpoint(self, value):
         try:
-            self.ardu.write("s{}".format(value.data))
+            self.ardu.write("s{:d}".format(value.data))
             self.ardu.flush()
             rospy.loginfo( "Changing the setpoint to {}".format(value.data))
         except Exception as e:
@@ -62,7 +62,7 @@ class Callbacks:
 
     def Kp(self,value):
         try:
-            self.ardu.write("p{}".format(value.data))
+            self.ardu.write("p{:d}".format(value.data))
             self.ardu.flush()
             rospy.loginfo( "sending Kp value of {}".format(value.data))
 
@@ -72,7 +72,7 @@ class Callbacks:
 
     def Kd(self,value):
         try:
-            self.ardu.write("d{}".format(value.data))
+            self.ardu.write("d{:d}".format(value.data))
             self.ardu.flush()
             rospy.loginfo( "sending Kd value of {}".format(value.data))
         except Exception as e:
@@ -81,7 +81,7 @@ class Callbacks:
 
     def Ki(self,value):
         try:
-            self.ardu.write("i{}".format(value.data))
+            self.ardu.write("i{:d}".format(value.data))
             self.ardu.flush()
             rospy.loginfo( "sending Ki value of {}".format(value.data))
         except Exception as e:
@@ -89,7 +89,7 @@ class Callbacks:
             rospy.loginfo( e.message)
     def RefreshRate(self,value):
         try:
-            self.ardu.write("r{}".format(value.data))
+            self.ardu.write("r{:d}".format(value.data))
             self.ardu.flush()
             rospy.loginfo( "sending RefreshRate value of {}".format(value.data))
         except Exception as e:
@@ -119,11 +119,11 @@ if __name__ == '__main__':
 
             motorCallbacks = Callbacks(motors)
             motorPublisher = rospy.Publisher('Motor{}/Output'.format(MotorNumber), String, queue_size=10)
-            motorSubscribers = rospy.Subscriber('Motor{}/Setpoint'.format(MotorNumber), Int32, motorCallbacks.Setpoint)
-            motorSubscribers = rospy.Subscriber('Motor{}/Kp'.format(MotorNumber), Int32, motorCallbacks.Kp)
-            motorSubscribers = rospy.Subscriber('Motor{}/Ki'.format(MotorNumber), Int32, motorCallbacks.Ki)
-            motorSubscribers = rospy.Subscriber('Motor{}/Kd'.format(MotorNumber), Int32, motorCallbacks.Kd)
-            motorSubscribers = rospy.Subscriber('Motor{}/RefreshRate'.format(MotorNumber), Int32, motorCallbacks.RefreshRate)
+            motorSubscribers = rospy.Subscriber('Motor{}/Setpoint'.format(MotorNumber), String, motorCallbacks.Setpoint)
+            motorSubscribers = rospy.Subscriber('Motor{}/Kp'.format(MotorNumber), String, motorCallbacks.Kp)
+            motorSubscribers = rospy.Subscriber('Motor{}/Ki'.format(MotorNumber), String, motorCallbacks.Ki)
+            motorSubscribers = rospy.Subscriber('Motor{}/Kd'.format(MotorNumber), String, motorCallbacks.Kd)
+            motorSubscribers = rospy.Subscriber('Motor{}/RefreshRate'.format(MotorNumber), String, motorCallbacks.RefreshRate)
 
             looper()
             rospy.spin()
