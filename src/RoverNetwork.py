@@ -115,7 +115,7 @@ if(__name__=="__main__"):
 
 
     while True:
-        if(threads[0].isAlive() and threads[1].isAlive()):
+        if(threads[0].isAlive()):
             sys.stdout.write("still alive ..." + str(time.ctime())+"\r")
             sys.stdout.flush()
             try:
