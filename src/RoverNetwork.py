@@ -110,9 +110,9 @@ if(__name__=="__main__"):
             "M3":1,
             "M4":1}
     motors["M1"] = rospy.Publisher("Motor1/Setpoint", String, queue_size=10)
-    motors["M2"] = rospy.Publisher("Motor1/Setpoint", String, queue_size=10)
-    motors["M3"] = rospy.Publisher("Motor1/Setpoint", String, queue_size=10)
-    motors["M4"] = rospy.Publisher("Motor1/Setpoint", String, queue_size=10)
+    motors["M2"] = rospy.Publisher("Motor2/Setpoint", String, queue_size=10)
+    motors["M3"] = rospy.Publisher("Motor3/Setpoint", String, queue_size=10)
+    motors["M4"] = rospy.Publisher("Motor4/Setpoint", String, queue_size=10)
 
 
     threads = []
