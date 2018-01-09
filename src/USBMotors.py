@@ -37,7 +37,7 @@ def looper():
     while not rospy.is_shutdown():
         if(motors.in_waiting == 0):
             MotorData = motors.readline().strip().split(",")
-            motorPublisher.publish(MotorData)
+            motorPublisher.publish("{}".format(MotorData))
             for j in range(len(MotorData)):
                 MotorData[j] = float(MotorData[j])
             #rospy.loginfo("{} : {}".format(rospy.get_caller_id(), MotorData))
