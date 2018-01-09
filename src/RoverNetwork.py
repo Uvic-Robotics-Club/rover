@@ -100,6 +100,7 @@ def dictMoveMotors(receivedData):
     for key in receivedData:
         rospy.loginfo("TRYING TO PUBLISH {} to {}\n".format(receivedData[key],key))
         motors[key].publish("{}".format(int(receivedData[key])))
+        motors[key].publish("1".format(int(receivedData[key])))
         rospy.loginfo("PUBLISHED {} to {}\n".format(receivedData[key],key))
 
 
