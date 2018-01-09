@@ -100,17 +100,21 @@ def dictMoveMotors(receivedData):
     for key in receivedData:
         rospy.loginfo("TRYING TO PUBLISH {} to {}\n".format(receivedData[key],key))
         motors[key].publish("{}".format(int(receivedData[key])))
-        motors[key].publish("1".format(int(receivedData[key])))
         rospy.loginfo("PUBLISHED {} to {}\n".format(receivedData[key],key))
 
 
 
 if(__name__=="__main__"):
     rospy.init_node('RoverNetwork', anonymous=True)
-    motors={"M1":rospy.Publisher("Motor1/Setpoint", Int32, queue_size=10),
-            "M2":rospy.Publisher("Motor2/Setpoint", Int32, queue_size=10),
-            "M3":rospy.Publisher("Motor3/Setpoint", Int32, queue_size=10),
-            "M4":rospy.Publisher("Motor4/Setpoint", Int32, queue_size=10)}
+    motors={"M1":1,
+            "M2":1,
+            "M3":1,
+            "M4":1}
+    motors["M1"] = rospy.Publisher("Motor1/Setpoint", Int32, queue_size=10)
+    motors["M2"] = rospy.Publisher("Motor1/Setpoint", Int32, queue_size=10)
+    motors["M3"] = rospy.Publisher("Motor1/Setpoint", Int32, queue_size=10)
+    motors["M4"] = rospy.Publisher("Motor1/Setpoint", Int32, queue_size=10)
+
 
     threads = []
     t2 = threading.Thread(target=readStuff)
