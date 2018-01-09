@@ -13,7 +13,7 @@
 		<param name="~motor" value="3"/>
 		<param name="~port" value="/dev/ttyUSB2"/>
 	</node>
-    <node name="Motor3" pkg="rover" type="USBMotors.py" >
+    <node name="Motor4" pkg="rover" type="USBMotors.py" >
 		<param name="~motor" value="3"/>
 		<param name="~port" value="/dev/ttyUSB3"/>
 	</node>
