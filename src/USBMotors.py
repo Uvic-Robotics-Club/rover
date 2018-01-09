@@ -40,7 +40,7 @@ def looper():
             motorPublisher.publish("{}".format(MotorData))
             for j in range(len(MotorData)):
                 MotorData[j] = float(MotorData[j])
-            #rospy.loginfo("{} : {}".format(rospy.get_caller_id(), MotorData))
+            rospy.loginfo("{} : {}".format(rospy.get_caller_id(), MotorData))
         rate.sleep()
     motors.close()
 
