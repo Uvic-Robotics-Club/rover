@@ -138,7 +138,11 @@ if __name__ == '__main__':
             temparduinoData = serial.Serial(port, 9600) #Creating our serial object
             arduinoString = temparduinoData.readline()
             rospy.loginfo(arduinoString.strip())
-
+            if "Motor:" in arduinoString:
+                all=string.maketrans('','')
+                nodigs=all.translate(all, string.digits)
+                arduinoString=arduinoString.translate(all, nodigs)
+                MotorNumber = int(arduinoString)
                 if MotorNumber != DesiredMotor:
                     continue
                 motors = temparduinoData
