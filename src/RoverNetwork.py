@@ -99,6 +99,7 @@ def dictMoveMotors(receivedData):
 
 
 if(__name__=="__main__"):
+    rospy.init_node('RoverNetwork', anonymous=True)
     motors={"M1":rospy.Publisher("Motor1/Setpoint", Int32, queue_size=10),
             "M2":rospy.Publisher("Motor2/Setpoint", Int32, queue_size=10),
             "M3":rospy.Publisher("Motor3/Setpoint", Int32, queue_size=10),
