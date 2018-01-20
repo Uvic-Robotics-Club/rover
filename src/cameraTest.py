@@ -90,7 +90,7 @@ def sendStuff():
                 s.send("new frame")
                 frame = get_image()
                 cimg = cv2.medianBlur(frame,5)
-                cimg = cv2.cvtColor(cimg,cv2.COLOR_GRAY2BGR)
+                #cimg = cv2.cvtColor(cimg,cv2.COLOR_GRAY2BGR)
                 circles = cv2.HoughCircles(cimg,cv2.HOUGH_GRADIENT,1,20,param1=50,param2=30,minRadius=0,maxRadius=0)
                 for i in circles[0,:]:
                     # draw the outer circle
