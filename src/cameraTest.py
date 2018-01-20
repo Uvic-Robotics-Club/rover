@@ -179,9 +179,6 @@ if(__name__=="__main__"):
 
     motors = {"M1":1,"M2":2,"M3":3,"M4":4}
     motorDirs = {"M1":0,"M2":0,"M3":0,"M4":0}
-    for key in motors:
-        motors[key].run(Adafruit_MotorHAT.FORWARD)
-        motorDirs[key] = Adafruit_MotorHAT.FORWARD
 
     threads = []
     t1 = threading.Thread(target=sendStuff)
