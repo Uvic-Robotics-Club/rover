@@ -43,6 +43,7 @@ def readStuff():
                 if(not data == o_data):
                     ndata = {}
                     ndata = json.loads(data)
+                    print ndata
                     if(ndata.has_key('exit')):
                         totalExit = True
                     elif(ndata.has_key('width')):
@@ -67,16 +68,20 @@ def readStuff():
 
 def sendStuff():
     global totalExit,HOST
+
     sys.stdout.write("Start of sending thread\n")
     sys.stdout.flush()
 
-    PORT = 314*2
+    PORT = 628
     loop1 = True
     while loop1 and not totalExit:
         loop2 = True
+        sys.stdout.write("connecting to server - sender\n")
+        sys.stdout.flush()
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((HOST, PORT))
         sys.stdout.write("connected to server - sender\n")
+        sys.stdout.flush()
         while loop2 and not totalExit:
             try:
                 s.send("new frame")
@@ -116,7 +121,8 @@ def dictMoveMotors(receivedData):
     for key in receivedData:
         receivedData[key] = int(receivedData[key])
     for key in receivedData:
-        print "{}:{}".format(key, receivedData)
+        #print "{}:{}".format(key, receivedData)
+        pass
 
 
 if(__name__=="__main__"):
