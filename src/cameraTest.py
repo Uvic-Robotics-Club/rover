@@ -67,7 +67,7 @@ def readStuff():
     return
 
 def sendStuff():
-    global totalExit,HOST
+    global totalExit, HOST
 
     sys.stdout.write("Start of sending thread\n")
     sys.stdout.flush()
@@ -79,7 +79,7 @@ def sendStuff():
         sys.stdout.write("connecting to server - sender\n")
         sys.stdout.flush()
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sys.stdout.write("socket is created, trying to connect to {} - sender\n".format(HOST))
+        sys.stdout.write("socket is created, trying to connect to {}::{} - sender\n".format(HOST,PORT))
         sys.stdout.flush()
         s.connect((HOST, PORT))
         sys.stdout.write("connected to server - sender\n")
@@ -102,10 +102,11 @@ def sendStuff():
                 time.sleep(0)
 
             except Exception as e:
-                print "caught general exception in sending which is: |" + e.message+"|"
-                #totalExit = True
-                loop2 = False
-                break
+                if(e.message != ""):
+                    print "caught general exception in sending which is: |" + e.message+"|"
+                    #totalExit = True
+                    loop2 = False
+                    break
         s.close()
     return
 
