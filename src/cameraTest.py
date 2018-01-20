@@ -43,7 +43,6 @@ def readStuff():
                 if(not data == o_data):
                     ndata = {}
                     ndata = json.loads(data)
-                    print ndata
                     if(ndata.has_key('exit')):
                         totalExit = True
                     elif(ndata.has_key('width')):
@@ -87,16 +86,12 @@ def sendStuff():
 
         while loop2 and not totalExit:
             try:
+                #dont change the "new frame" this is a keyword for me
                 s.send("new frame")
-                try:
-                    frame = get_image()
-                except Exception:
-                    print "Failed getting the image"
+                frame = get_image()
                 encode_param=[int(cv2.IMWRITE_JPEG_QUALITY),camera_quality]
-                try:
-                    result, imgencode = cv2.imencode('.jpg', frame, encode_param)
-                except Exception:
-                    print "Failed encoding the frame"
+                result, imgencode = cv2.imencode('.jpg', frame, encode_param)
+
                 data = np.array(imgencode)
                 stringData = data.tostring()
                 try:
