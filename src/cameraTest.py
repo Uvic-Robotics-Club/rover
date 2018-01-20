@@ -79,6 +79,8 @@ def sendStuff():
         sys.stdout.write("connecting to server - sender\n")
         sys.stdout.flush()
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sys.stdout.write("socket is created, trying to connect to {} - sender\n".format(HOST))
+        sys.stdout.flush()
         s.connect((HOST, PORT))
         sys.stdout.write("connected to server - sender\n")
         sys.stdout.flush()
