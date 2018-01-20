@@ -102,14 +102,12 @@ def sendStuff():
                 try:
                     s.send( str(len(stringData)).ljust(16));
                     s.send( stringData );
+                    s.send(time.ctime())
+
                 except Exception:
                     print "Failed sending the data"
-    			# Tell the listener that all pieces have been sent
-                s.send("Image Complete")
-
-                s.send(time.ctime())
-                time.sleep(0)
-
+                    time.sleep(0.001)
+                    raise
             except Exception as e:
                 print "caught general exception in sending which is: |{}| of a type |{}|".format(e.message,e.__class__.__name__)
                 #totalExit = True
