@@ -84,17 +84,26 @@ def sendStuff():
         s.connect((HOST, PORT))
         sys.stdout.write("connected to server - sender\n")
         sys.stdout.flush()
+
         while loop2 and not totalExit:
             try:
                 s.send("new frame")
-                frame = get_image()
+                try:
+                    frame = get_image()
+                except Exception:
+                    print "Failed getting the image"
                 encode_param=[int(cv2.IMWRITE_JPEG_QUALITY),camera_quality]
-                result, imgencode = cv2.imencode('.jpg', frame, encode_param)
+                try:
+                    result, imgencode = cv2.imencode('.jpg', frame, encode_param)
+                except Exception:
+                    print "Failed encoding the frame"
                 data = np.array(imgencode)
                 stringData = data.tostring()
-
-                s.send( str(len(stringData)).ljust(16));
-                s.send( stringData );
+                try:
+                    s.send( str(len(stringData)).ljust(16));
+                    s.send( stringData );
+                except Exception:
+                    print "Failed sending the data"
     			# Tell the listener that all pieces have been sent
                 s.send("Image Complete")
 
@@ -103,10 +112,9 @@ def sendStuff():
 
             except Exception as e:
                 print "caught general exception in sending which is: |{}| of a type |{}|".format(e.message,e.__class__.__name__)
-                if(e.message != ""):
-                    #totalExit = True
-                    loop2 = False
-                    break
+                #totalExit = True
+                loop2 = False
+                break
         s.close()
     return
 
