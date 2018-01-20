@@ -65,17 +65,7 @@ def readStuff():
         s.close()
     return
 
-def auto_canny(image, sigma=0.33):
-    # compute the median of the single channel pixel intensities
-    v = np.median(image)
 
-    # apply automatic Canny edge detection using the computed median
-    lower = int(max(0, (1.0 - sigma) * v))
-    upper = int(min(255, (1.0 + sigma) * v))
-    edged = cv2.Canny(image, lower, upper)
-
-    # return the edged image
-    return edged
 
 def sendStuff():
     global totalExit, HOST
@@ -103,7 +93,7 @@ def sendStuff():
                 frame = get_image()
                 cimg = cv2.medianBlur(frame,5)
                 cimg = cv2.cvtColor(cimg,cv2.COLOR_BGR2GRAY)
-                frame = auto_canny(cimg)
+
 
                 encode_param=[int(cv2.IMWRITE_JPEG_QUALITY),camera_quality]
                 result, imgencode = cv2.imencode('.jpg', frame, encode_param)
