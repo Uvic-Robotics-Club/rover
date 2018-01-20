@@ -23,29 +23,9 @@ def get_image():
     return im
 
 def readStuff():
-    global totalExit,camera_quality
+    global totalExit,camera_quality,HOST
     sys.stdout.write("Start of receiving thread\n")
     sys.stdout.flush()
-    HOST = ''
-    try:
-        sys.stdout.write("LOOKING FOR DESKTOP\n")
-        sys.stdout.flush()
-        HOST = socket.gethostbyname('Joel-Desktop')
-
-
-    except Exception as e:
-        print e
-    if HOST == '':
-        try:
-            sys.stdout.write("LOOKING FOR LAPTOP\n")
-            sys.stdout.flush()
-            HOST = socket.gethostbyname('DESKTOP-VSET45C')
-        except Exception as e:
-            print e
-    if(HOST==""):
-        totalExit = True
-        print 'Could not find the right computers on the network, EXITING'
-        return 1
 
     PORT = 314
     loop1 = True
@@ -86,29 +66,9 @@ def readStuff():
     return
 
 def sendStuff():
-    global totalExit
+    global totalExit,HOST
     sys.stdout.write("Start of sending thread\n")
     sys.stdout.flush()
-    HOST = ''
-    try:
-        sys.stdout.write("LOOKING FOR DESKTOP\n")
-        sys.stdout.flush()
-        HOST = socket.gethostbyname('Joel-Desktop')
-
-
-    except Exception as e:
-        print e
-    if HOST == '':
-        try:
-            sys.stdout.write("LOOKING FOR LAPTOP\n")
-            sys.stdout.flush()
-            HOST = socket.gethostbyname('DESKTOP-VSET45C')
-        except Exception as e:
-            print e
-    if(HOST==""):
-        totalExit = True
-        print 'Could not find the right computers on the network, EXITING'
-        return 1
 
     PORT = 314*2
     loop1 = True
@@ -174,6 +134,25 @@ if(__name__=="__main__"):
 
     if(camera==None):
         print "EXITING because I cant find any webcam!"
+        sys.exit()
+
+    HOST = ''
+    try:
+        sys.stdout.write("LOOKING FOR DESKTOP\n")
+        sys.stdout.flush()
+        HOST = socket.gethostbyname('Joel-Desktop')
+    except Exception as e:
+        print e
+    if HOST == '':
+        try:
+            sys.stdout.write("LOOKING FOR LAPTOP\n")
+            sys.stdout.flush()
+            HOST = socket.gethostbyname('DESKTOP-VSET45C')
+        except Exception as e:
+            print e
+    if(HOST==""):
+        totalExit = True
+        print 'Could not find the right computers on the network, EXITING'
         sys.exit()
 
 
