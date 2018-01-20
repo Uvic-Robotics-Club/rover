@@ -104,7 +104,7 @@ def sendStuff():
                     x2 = int(x0 - 1000*(-b))
                     y2 = int(y0 - 1000*(a))
 
-    cv2.line(img,(x1,y1),(x2,y2),(0,0,255),2)
+                    cv2.line(img,(x1,y1),(x2,y2),(0,0,255),2)
 
                 encode_param=[int(cv2.IMWRITE_JPEG_QUALITY),camera_quality]
                 result, imgencode = cv2.imencode('.jpg', frame, encode_param)
