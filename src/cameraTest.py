@@ -102,8 +102,8 @@ def sendStuff():
                 time.sleep(0)
 
             except Exception as e:
+                print "caught general exception in sending which is: |{}| of a type |{}|".format(e.message,e.__class__.__name__)
                 if(e.message != ""):
-                    print "caught general exception in sending which is: |" + e.message+"|"
                     #totalExit = True
                     loop2 = False
                     break
@@ -189,6 +189,7 @@ if(__name__=="__main__"):
             except Exception as e:
                 totalExit = True
                 print 'Trying to exit'
+                sys.exit()
         else:
             break
 
