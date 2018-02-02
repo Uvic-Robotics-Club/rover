@@ -1,0 +1,13 @@
+<launch>
+  <node pkg="rover" type="sensor_node" name="phone_to_ros" output="screen">
+    <param name="sensor_param" value="param_value" />
+  </node>
+
+  <node pkg="rover" type="odom_node_type" name="odom" output="screen">
+    <param name="odom_param" value="param_value" />
+  </node>
+
+  <node pkg="transform_configuration_pkg" type="transform_configuration_type" name="transform_configuration_name" output="screen">
+    <param name="transform_configuration_param" value="param_value" />
+  </node>
+</launch>
