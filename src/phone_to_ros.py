@@ -52,7 +52,7 @@ import numpy as np
 from geometry_msgs.msg import Vector3
 from sensor_msgs.msg import NavSatFix
 from geometry_msgs.msg import PoseStamped
-from sensor_msgs.msg import Imu
+from sensor_msgs.msg import Imu, MagneticField
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 
 
@@ -68,6 +68,8 @@ def split_sensors(raw_message):
 
     msg = Vector3()
     for sensor_topic in topics:
+        if sensor_topic is "Magnetic":
+            continue
         sensor_location = topics[sensor_topic]
         msg.x = float(split_message[sensor_location][0])
         msg.y = float(split_message[sensor_location][1])
@@ -85,36 +87,41 @@ def split_sensors(raw_message):
     ay = float(split_message[topics["G_Rotation"]][1])
     az = float(split_message[topics["G_Rotation"]][2])
 
-    ax = mapValue(ax,-1.0,1.0,0.0,2*np.pi)
-    ay = mapValue(ay,-1.0,1.0,0.0,2*np.pi)
-    az = mapValue(az,-1.0,1.0,0.0,2*np.pi)
+    pitch = mapValue(ax,-1.0,1.0,-np.pi,np.pi)
+    roll = mapValue(ay,-1.0,1.0,-np.pi,np.pi)
+    yaw= mapValue(az,-1.0,1.0,-np.pi,np.pi)
 
-    r1 = np.array([
-    [1,0,0],
-    [0,np.cos(ax),-np.sin(ax)],
-    [0,np.sin(ax),np.cos(ax)]
-    ])
-    r2 = np.array([
-    [np.cos(ay),0,np.sin(ay)],
-    [0,1,0],
-    [-np.sin(ay),0,np.cos(ay)]
-    ])
-    r3 = np.array([
-    [np.cos(az),-np.sin(az),0],
-    [np.sin(az), np.cos(az),0],
-    [0,0,1]
-    ])
-
-    r = r1*r2*r3
-
-    roll = np.arctan2(ay , az)
-    pitch = np.arctan2(-ax , np.sqrt(ay*ay + az*az))
+    quat = quaternion_from_euler(roll,pitch,yaw)
 
 
-    quat = quaternion_from_euler(ax,ay,az)
 
+    imu_msg = Imu()
+    imu_msg.header.frame_id = "map"
+    imu_msg.header.stamp = rospy.get_rostime()
 
-    rospy.loginfo(quat)
+    imu_msg.orientation.x = quat[0]
+    imu_msg.orientation.y = quat[1]
+    imu_msg.orientation.z = quat[2]
+    imu_msg.orientation.w = quat[3]
+
+    imu_msg.angular_velocity.x =float(split_message[topics["LinearAcceleration"]][0])
+    imu_msg.angular_velocity.y =float(split_message[topics["LinearAcceleration"]][1])
+    imu_msg.angular_velocity.z =float(split_message[topics["LinearAcceleration"]][2])
+
+    imu_msg.linear_acceleration.x = float(split_message[topics["Gyroscope"]][0])
+    imu_msg.linear_acceleration.y = float(split_message[topics["Gyroscope"]][1])
+    imu_msg.linear_acceleration.z = float(split_message[topics["Gyroscope"]][2])
+    sensorPub["RVIZ_IMU"].publish(imu_msg)
+
+    mag_msg = MagneticField()
+    mag_msg.header.frame_id = "map"
+    mag_msg.header.stamp = rospy.get_rostime()
+    mag_msg.magnetic_field.x = float(split_message[topics["Magnetic"]][0])
+    mag_msg.magnetic_field.y = float(split_message[topics["Magnetic"]][1])
+    mag_msg.magnetic_field.z = float(split_message[topics["Magnetic"]][2])
+    #mag_msg.magnetic_field_covariance = 0
+    sensorPub["Magnetic"].publish(mag_msg)
+
 
     rviz_msg = PoseStamped()
     rviz_msg.header.frame_id = "map"
@@ -128,24 +135,6 @@ def split_sensors(raw_message):
     rviz_msg.pose.orientation.w = quat[3]
 
     sensorPub["RVIZ"].publish(rviz_msg)
-
-    imu_msg = Imu()
-    imu_msg.header.frame_id = "map"
-    imu_msg.header.stamp = rospy.get_rostime()
-
-    imu_msg.orientation.x = quat[1]
-    imu_msg.orientation.y = quat[2]
-    imu_msg.orientation.z = quat[0]
-    imu_msg.orientation.w = quat[3]
-
-    imu_msg.angular_velocity.x =float(split_message[topics["LinearAcceleration"]][0])
-    imu_msg.angular_velocity.y =float(split_message[topics["LinearAcceleration"]][1])
-    imu_msg.angular_velocity.z =float(split_message[topics["LinearAcceleration"]][2])
-
-    imu_msg.linear_acceleration.x = float(split_message[topics["Gyroscope"]][0])
-    imu_msg.linear_acceleration.y = float(split_message[topics["Gyroscope"]][1])
-    imu_msg.linear_acceleration.z = float(split_message[topics["Gyroscope"]][2])
-    sensorPub["RVIZ_IMU"].publish(imu_msg)
 
 def udp_receive():
     host = ''
@@ -161,6 +150,7 @@ def udp_receive():
     while not rospy.is_shutdown():
         try:
             message, address = s.recvfrom(8192)
+            #rospy.logwarn(message)
             split_sensors(message)
         except:
             traceback.print_exc()
@@ -168,17 +158,17 @@ def udp_receive():
 if __name__ == '__main__':
     rospy.init_node('phone2ros', anonymous=True)
     sensorPub = {}
-    sensorPub["Acceleration"] = rospy.Publisher("Sensor/Acceleration",Vector3)
-    sensorPub["Magnetic"] = rospy.Publisher("Sensor/Magnetic",Vector3)
-    sensorPub["Gyroscope"] = rospy.Publisher("Sensor/Gyroscope",Vector3)
-    sensorPub["Barometer"] = rospy.Publisher("Sensor/Barometer",Vector3)
-    sensorPub["Rotation"] = rospy.Publisher("Sensor/Rotation",Vector3)
-    sensorPub["Gravity"] = rospy.Publisher("Sensor/Gravity",Vector3)
-    sensorPub["LinearAcceleration"] = rospy.Publisher("Sensor/LinearAcceleration",Vector3)
-    sensorPub["G_Rotation"] = rospy.Publisher("Sensor/GameRotation",Vector3)
-    sensorPub["GPS"] = rospy.Publisher("Sensor/GPS",NavSatFix)
-    sensorPub["RVIZ"] = rospy.Publisher("Sensor/Pose_test",PoseStamped)
-    sensorPub["RVIZ_IMU"] = rospy.Publisher("Sensor/IMU_test",Imu)
+    sensorPub["Acceleration"] = rospy.Publisher("Sensor/Acceleration",Vector3, queue_size = 1)
+    sensorPub["Magnetic"] = rospy.Publisher("imu/mag",MagneticField, queue_size = 1)
+    sensorPub["Gyroscope"] = rospy.Publisher("Sensor/Gyroscope",Vector3, queue_size = 1)
+    sensorPub["Barometer"] = rospy.Publisher("Sensor/Barometer",Vector3, queue_size = 1)
+    sensorPub["Rotation"] = rospy.Publisher("Sensor/Rotation",Vector3, queue_size = 1)
+    sensorPub["Gravity"] = rospy.Publisher("Sensor/Gravity",Vector3, queue_size = 1)
+    sensorPub["LinearAcceleration"] = rospy.Publisher("Sensor/LinearAcceleration",Vector3, queue_size = 1)
+    sensorPub["G_Rotation"] = rospy.Publisher("Sensor/GameRotation",Vector3, queue_size = 1)
+    sensorPub["GPS"] = rospy.Publisher("Sensor/GPS",NavSatFix, queue_size = 1)
+    sensorPub["RVIZ"] = rospy.Publisher("Sensor/Pose_test",PoseStamped, queue_size = 1)
+    sensorPub["RVIZ_IMU"] = rospy.Publisher("imu/data_raw",Imu, queue_size = 1)
 
     topics = {"Acceleration":0,"Magnetic":1,"Gyroscope":2,"Barometer":3,"G_Rotation":4,"Rotation":5,"Gravity":6,"LinearAcceleration":7}
 
