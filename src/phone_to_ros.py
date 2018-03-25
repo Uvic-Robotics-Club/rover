@@ -87,9 +87,9 @@ def split_sensors(raw_message):
     ay = float(split_message[topics["G_Rotation"]][1])
     az = float(split_message[topics["G_Rotation"]][2])
 
-    pitch = mapValue(ax,-1.0,1.0,-np.pi,np.pi)
-    roll = mapValue(ay,-1.0,1.0,-np.pi,np.pi)
-    yaw= mapValue(az,-1.0,1.0,-np.pi,np.pi)
+    pitch = 2.0*np.arcsin(ax)
+    roll = 2.0*np.arcsin(ay)
+    yaw= 2.0*np.arcsin(az)
 
     quat = quaternion_from_euler(roll,pitch,yaw)
 
@@ -104,13 +104,13 @@ def split_sensors(raw_message):
     imu_msg.orientation.z = quat[2]
     imu_msg.orientation.w = quat[3]
 
-    imu_msg.angular_velocity.x =float(split_message[topics["LinearAcceleration"]][0])
-    imu_msg.angular_velocity.y =float(split_message[topics["LinearAcceleration"]][1])
-    imu_msg.angular_velocity.z =float(split_message[topics["LinearAcceleration"]][2])
+    imu_msg.linear_acceleration.x =float(split_message[topics["LinearAcceleration"]][0])
+    imu_msg.linear_acceleration.y =float(split_message[topics["LinearAcceleration"]][1])
+    imu_msg.linear_acceleration.z =float(split_message[topics["LinearAcceleration"]][2])
 
-    imu_msg.linear_acceleration.x = float(split_message[topics["Gyroscope"]][0])
-    imu_msg.linear_acceleration.y = float(split_message[topics["Gyroscope"]][1])
-    imu_msg.linear_acceleration.z = float(split_message[topics["Gyroscope"]][2])
+    imu_msg.angular_velocity.x = float(split_message[topics["Gyroscope"]][0])
+    imu_msg.angular_velocity.y = float(split_message[topics["Gyroscope"]][1])
+    imu_msg.angular_velocity.z = float(split_message[topics["Gyroscope"]][2])
     sensorPub["RVIZ_IMU"].publish(imu_msg)
 
     mag_msg = MagneticField()
@@ -123,16 +123,26 @@ def split_sensors(raw_message):
     sensorPub["Magnetic"].publish(mag_msg)
 
 
+    ax2 = float(split_message[topics["G_Rotation"]][0])
+    ay2 = float(split_message[topics["G_Rotation"]][1])
+    az2 = float(split_message[topics["G_Rotation"]][2])
+
+    pitch2 = 2.0*np.arcsin(ax2)
+    roll2 = 2.0*np.arcsin(ay2)
+    yaw2= 2.0*np.arcsin(az2)
+
+    quat2 = quaternion_from_euler(roll2,pitch2,yaw2,'sxyz')
+
     rviz_msg = PoseStamped()
     rviz_msg.header.frame_id = "map"
     rviz_msg.header.stamp = rospy.get_rostime()
     rviz_msg.pose.position.x = 0
     rviz_msg.pose.position.y = 0
     rviz_msg.pose.position.z = 0
-    rviz_msg.pose.orientation.x = quat[0]
-    rviz_msg.pose.orientation.y = quat[1]
-    rviz_msg.pose.orientation.z = quat[2]
-    rviz_msg.pose.orientation.w = quat[3]
+    rviz_msg.pose.orientation.x = quat2[0]
+    rviz_msg.pose.orientation.y = quat2[1]
+    rviz_msg.pose.orientation.z = quat2[2]
+    rviz_msg.pose.orientation.w = quat2[3]
 
     sensorPub["RVIZ"].publish(rviz_msg)
 
