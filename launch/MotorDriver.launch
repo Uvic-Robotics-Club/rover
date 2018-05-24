@@ -1,0 +1,16 @@
+<launch>
+	<!-- All parameters are defined as private to avoid confusion -->
+
+    <node name="M1" pkg="rosserial_python" type="serial_node.py" >
+    </node>
+
+    <node name="M2" pkg="rosserial_python" type="serial_node.py" >
+    </node>
+
+    <node name="M3" pkg="rosserial_python" type="serial_node.py" >
+    </node>
+
+    <node name="M4" pkg="rosserial_python" type="serial_node.py" >
+    </node>
+
+</launch>

@@ -1,0 +1,36 @@
+<launch>
+	<!-- All parameters are defined as private to avoid confusion -->
+
+	<node name="m_1" pkg="rover" type="wheel_sending" >
+		<param name="motor" value="motor_1"/>
+	</node>
+
+
+	<node name="m_2" pkg="rover" type="wheel_sending" >
+		<param name="motor" value="motor_2"/>
+	</node>
+
+	<node name="m_3" pkg="rover" type="wheel_sending" >
+		<param name="motor" value="motor_3" />
+	</node>
+
+	<node name="m_4" pkg="rover" type="wheel_sending" >
+		<param name="motor" value="motor_4" />
+	</node>
+
+	<node name="m_5" pkg="rover" type="wheel_sending" >
+		<param name="motor" value="motor_5" />
+	</node>
+
+	<node name="m_6" pkg="rover" type="wheel_sending" >
+		<param name="motor" value="motor_6" />
+	</node>
+	
+	<!-->
+	<node name="USB_NODE_1" pkg="rosserial_python" type="serial_node.py" args="/dev/ttyUSB0" >
+	</node>
+	<-->
+	<!-- node name="USB_NODE_2" pkg="rosserial_python" type="serial_node.py" args="/dev/ttyACM0" -->
+	<!-- /node -->
+
+</launch>
