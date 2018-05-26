@@ -9,6 +9,7 @@ def splitpublish(json_raw):
 	if len(json_raw) != 0:
 		#Converting a JSON object into a Python dictionary
 		decoded = json.loads(json_raw)
+		print decoded
 		
 		#3-D vector that will temporarily contain all 3-D data
 		#before it is published
@@ -19,11 +20,12 @@ def splitpublish(json_raw):
 		#and find the desired HyperIMU data
 		#because we stored the data stream names in sensorPub in the main
 		for sensor_topic in [key for key,val in sensorPub.items()]:
-			msg.x = float(decoded[sensor_topic][0])
-			msg.y = float(decoded[sensor_topic][1])
-			msg.z = float(decoded[sensor_topic][2])
-			sensorPub[sensor_topic].publish(msg)
-			print(msg)
+			if sensor_topic in decoded:
+				msg.x = float(decoded[sensor_topic][0])
+				msg.y = float(decoded[sensor_topic][1])
+				msg.z = float(decoded[sensor_topic][2])
+				sensorPub[sensor_topic].publish(msg)
+				print(msg)
 
 
 def tcp_receive():
@@ -31,6 +33,7 @@ def tcp_receive():
 	port = 5555
 
 	#TCP connection! HyperIMU can only send JSON over TCP, not UDP
+	#put this block into a loop so that any disconnection will shut everything down and then resume listening
 	s = socket.socket()
 	s.bind((host, port))
 	print('Waiting for connection...')
@@ -42,8 +45,10 @@ def tcp_receive():
 		try:
 			message = c.recv(8192)
 			splitpublish(message)
-		except:
+		except Exception as e:
 			traceback.print_exc()
+			print e
+	print("Rospy is shut down")
 
 if __name__ == '__main__':
 	rospy.init_node('phoneJSON', anonymous=True)
