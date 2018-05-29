@@ -3,6 +3,7 @@ import rospy
 import traceback
 import socket
 import json
+import thread
 from geometry_msgs.msg import Vector3
 
 def splitpublish(json_raw):
@@ -27,28 +28,39 @@ def splitpublish(json_raw):
 				sensorPub[sensor_topic].publish(msg)
 				print(msg)
 
+#This function is run on multiple threads. 
+#t accepts HyperIMU information and calls splitpublish
+def clientrun(clientsocket, address):
+	while True:
+		try:
+			message = clientsocket.recv(8192)
+			splitpublish(message)
+		except Exception as e:
+			traceback.print_exc()
+			print e
+	clientsocket.close()
 
 def tcp_receive():
 	host = ''
 	port = 5555
 
 	#TCP connection! HyperIMU can only send JSON over TCP, not UDP
-	#put this block into a loop so that any disconnection will shut everything down and then resume listening
+	#put this block into a loop so that any disconnection will shut everything down
+	#and then resume listening
 	s = socket.socket()
 	s.bind((host, port))
 	print('Waiting for connection...')
 	s.listen(1)
-	c, addr = s.accept()
-	print("Connection received!")
 
 	while not rospy.is_shutdown():
 		try:
-			message = c.recv(8192)
-			splitpublish(message)
+			c, addr = s.accept()
+			print("Connection received!")
+			thread.start_new_thread(clientrun,(c,addr))
 		except Exception as e:
 			traceback.print_exc()
 			print e
-	print("Rospy is shut down")
+	print("Rospy is shut down.")
 
 if __name__ == '__main__':
 	rospy.init_node('phoneJSON', anonymous=True)
